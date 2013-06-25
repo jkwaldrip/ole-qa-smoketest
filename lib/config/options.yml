@@ -4,7 +4,7 @@
   :base_url: http://tst.ole.kuali.org/
   :ls_url: http://tst.rice2.ole.kuali.org/
   :explicit_wait: 10
-  :implicit_wait: 10
+  :implicit_wait: 0
   :headless?: true
   :capabilities?: true
   # TODO Set :sauce?: to false in development, true in deployment
@@ -13,3 +13,6 @@
   :version: 21
   :platform: Windows 7
   :name: OLE Smoketest # + v(version) + current date
+:sauce:
+  :username: your-username
+  :api_key: your-api-key
