@@ -5,7 +5,7 @@ require 'smoketest/VERSION'
 
 Gem::Specification.new do |spec|
   spec.name          = "ole-qa-smoketest"
-  spec.version       = OLE_QA::Smoketest::VERSION
+  spec.version       = "#{OLE_QA::Smoketest::VERSION}"
   spec.authors       = ["Jain Waldrip"]
   spec.email         = ["jkwaldri@indiana.edu"]
   spec.description   = "Kuali Open Library Environment Smoketest Application"
@@ -20,6 +20,7 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency "bundler", "~> 1.3"
   spec.add_development_dependency "rake"
+  spec.add_development_dependency "yard"
 
   spec.add_dependency "ole-qa-framework"
   spec.add_dependency "ole-qa-tools"
