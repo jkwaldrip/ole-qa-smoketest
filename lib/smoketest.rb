@@ -22,6 +22,9 @@ require "pp"
 require "benchmark"
 require "yaml"
 
+require "ole-qa-tools"
+require "ole-qa-framework"
+
 
 module OLE_QA
   module Smoketest
@@ -29,8 +32,8 @@ module OLE_QA
     dir = File.expand_path(File.dirname(__FILE__))
     $LOAD_PATH.unshift(dir) unless $LOAD_PATH.include?(dir)
 
-    Dir["#{File.dirname(__FILE__)}/*/*.rb"].each {|file| require file}
-    Dir["#{File.dirname(__FILE__)}/*/*/*.rb"].each {|file| require file}
+    Dir["#{File.dirname(__FILE__)}/smoketest/*.rb"].each {|file| require file}
+    Dir["#{File.dirname(__FILE__)}/smoketest/*/*.rb"].each {|file| require file}
 
   end
 end
