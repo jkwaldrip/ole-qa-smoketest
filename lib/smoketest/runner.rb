@@ -14,6 +14,7 @@
 
 module OLE_QA::Smoketest
   # Class to perform actual test execution.
+  # - Test scripts will evaluate in the context of this class.
   class Runner
     # Include assertions module from ole-qa-tools.
     include OLE_QA::Tools::Asserts
@@ -23,6 +24,7 @@ module OLE_QA::Smoketest
       # Make options accessible across instance.
       @options = options
 
+      # Set instance variables to be used during test script evaluation.
       @number = String.new
       @name = String.new
       @time = 0.0
@@ -36,8 +38,7 @@ module OLE_QA::Smoketest
       # Evaluate test scripts.
       if @options.include?(:testscript)
         @number = "1."
-        @options.include?(:path) ? path = @options[:path] : path = 'scripts/'
-        run_test(path + @options[:testscript])
+        run_test(@options[:testscript])
       else
         @testscripts = Dir["#{OLE_QA::Smoketest::LoadDir}/scripts/*.rb"].sort
         @testscripts.each do |script|
