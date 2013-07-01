@@ -54,8 +54,8 @@ optparse = OptionParser.new do |opts|
     options[:browser] = browser
   end
 
-  opts.on('-x','--xvfb',"Use XVFB for headless testing.\n        (Unused if using SauceLabs.)") do
-    options[:headless?] = true
+  opts.on('-x','--[no-]xvfb',"Use XVFB for headless testing.\n        (Unused if using SauceLabs.)") do |xvfb|
+    options[:headless?] = xvfb
   end
 
   opts.on('-s','--sauce-labs',"Use SauceLabs connection.") do
