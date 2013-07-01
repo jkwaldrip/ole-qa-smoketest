@@ -12,7 +12,9 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License
 
-module OLE_QA::Smoketest
-  # Version number of this project.
-  VERSION = '0.1.0'
+module OLE_QA
+  module Smoketest
+    # Version number of this project.
+    VERSION = '1.0.0'
+  end
 end

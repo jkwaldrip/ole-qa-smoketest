@@ -5,7 +5,7 @@ require 'smoketest/VERSION'
 
 Gem::Specification.new do |spec|
   spec.name          = "ole-qa-smoketest"
-  spec.version       = "#{OLE_QA::Smoketest::VERSION}"
+  spec.version       = OLE_QA::Smoketest::VERSION
   spec.authors       = ["Jain Waldrip"]
   spec.email         = ["jkwaldri@indiana.edu"]
   spec.description   = "Kuali Open Library Environment Smoketest Application"
@@ -16,9 +16,9 @@ Gem::Specification.new do |spec|
   spec.files         = Dir.glob("**/**/**")
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
-  spec.require_paths = ["lib"]
+  spec.require_paths = ["lib","scripts"]
 
-  spec.add_development_dependency "bundler", "~> 1.3"
+  spec.add_development_dependency "bundler"
   spec.add_development_dependency "rake"
   spec.add_development_dependency "yard"
 
@@ -26,4 +26,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency "ole-qa-tools"
   spec.add_dependency "chronic"
   spec.add_dependency "watir-webdriver"
+  spec.add_dependency "headless"
 end

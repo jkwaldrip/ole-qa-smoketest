@@ -1,0 +1,10 @@
+11:45:18 --START--
+11:45:18 OLE Smoketest (v0.1.0) 2013-07-01-1145
+11:45:18 Example Test 1
+11:45:18 # Making a fallacious assertion...
+11:45:28 Assertion failed.
+11:45:28 1.  Example Test 1       -- Fail (00:00:00)
+11:45:28 Example Test 2
+11:45:28 # Hello, World!
+11:45:28 2.  Example Test 2       -- Pass (00:00:00)
+11:45:29 --END--

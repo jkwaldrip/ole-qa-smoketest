@@ -1,4 +1,4 @@
-# Ole::Qa::Smoketest
+# OLE QA Smoketest
 
 TODO: Write a gem description
 

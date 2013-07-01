@@ -1,5 +1,3 @@
-#!/usr/bin/env ruby
-
 #  Copyright 2005-2013 The Kuali Foundation
 #
 #  Licensed under the Educational Community License, Version 2.0 (the "License");
@@ -28,12 +26,18 @@ require "ole-qa-framework"
 
 module OLE_QA
   module Smoketest
+    # Set date in format YYYY-MM-DD-HHMM
+    StartTime = Time.new.strftime("%Y-%m-%d-%H%M")
+    # Path to lib/
+    LibDir = File.dirname(__FILE__)
+    # Path to lib/..
+    LoadDir = LibDir + "/../"
 
-    dir = File.expand_path(File.dirname(__FILE__))
-    $LOAD_PATH.unshift(dir) unless $LOAD_PATH.include?(dir)
+    Dir["#{LibDir}/smoketest/*.rb"].each {|file| require file}
+    Dir["#{LibDir}/smoketest/*/*.rb"].each {|file| require file}
 
-    Dir["#{File.dirname(__FILE__)}/smoketest/*.rb"].each {|file| require file}
-    Dir["#{File.dirname(__FILE__)}/smoketest/*/*.rb"].each {|file| require file}
-
+    # Add custom error type.
+    class Error < StandardError
+    end
   end
 end
