@@ -55,7 +55,7 @@ module OLE_QA::Smoketest
     def run_test(test_file)
       @time = Benchmark.realtime { eval(File.read("#{test_file}")) }
       @outcome = true
-    rescue Watir::Wait::TimeoutError, OLE_QA::Tools::Error => e
+    rescue Watir::Wait::TimeoutError, Watir::Exception::UnknownObjectException, OLE_QA::Tools::Error => e
       @outcome = false
       report(e.message)
     ensure
