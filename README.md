@@ -122,5 +122,6 @@ Below is a short, non-comprehensive example of some of the functions called from
     - .select\_account!(chart\_code)
         - Returns a useable, active account number for the given chart code and prevents it from being reused within the same session.
 
+----
 &copy; 2005-2013, The Kuali Foundation.
 Released under the [ECLv2 License](http://opensource.org/licenses/ecl2.php).
