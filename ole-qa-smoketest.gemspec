@@ -23,7 +23,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "yard"
 
   spec.add_dependency "ole-qa-framework"
-  spec.add_dependency "ole-qa-tools"
+  spec.add_dependency "ole-qa-tools",">= 0.2.5"
   spec.add_dependency "chronic"
   spec.add_dependency "watir-webdriver"
   spec.add_dependency "headless"
