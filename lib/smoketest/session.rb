@@ -116,7 +116,7 @@ module OLE_QA::Smoketest
       # Start OLE_QA::Framework session.
       framework_options = @opts
       framework_options[:browser] = @browser
-      @framework = OLE_QA::Framework.new(framework_options)
+      @framework = OLE_QA::Framework::Session.new(framework_options)
 
       # Open logfile if logging enabled.
       if @opts[:logging?]

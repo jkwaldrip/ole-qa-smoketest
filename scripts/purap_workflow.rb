@@ -15,7 +15,7 @@
 set_name("PURAP Workflow Test")
 report("Opening new requisition.",1)
 
-requisition = OLE_QA::OLEFS::Requisition.new(@ole)
+requisition = OLE_QA::Framework::OLEFS::Requisition.new(@ole)
 requisition.open
 
 report("Set description to #{@name}.",1)
@@ -27,7 +27,7 @@ requisition.building_search_icon.wait_until_present
 requisition.building_search_icon.click
 
 report("Building search.",2)
-building_lookup = OLE_QA::OLEFS::Building_Lookup.new(@ole)
+building_lookup = OLE_QA::Framework::OLEFS::Building_Lookup.new(@ole)
 building_lookup.wait_for_page_to_load
 building_lookup.building_name_field.set("Wells Library")
 building_lookup.search_button.click
@@ -51,7 +51,7 @@ requisition.vendor_search_icon.wait_until_present
 requisition.vendor_search_icon.click
 
 report("Vendor search.",2)
-vendor_lookup = OLE_QA::OLEFS::Vendor_Lookup.new(@ole)
+vendor_lookup = OLE_QA::Framework::OLEFS::Vendor_Lookup.new(@ole)
 vendor_lookup.wait_for_page_to_load
 vendor_lookup.vendor_name_field.set("YBP")
 vendor_lookup.search_button.click
@@ -69,7 +69,7 @@ requisition.vendor_tab_toggle.click
 report("Add a minimum-requirements bib record.",1)
 requisition.new_line_item.new_bib_button.click
 @ole.browser.windows[-1].use
-bib_editor = OLE_QA::OLELS::Bib_Editor.new(@ole)
+bib_editor = OLE_QA::Framework::OLELS::Bib_Editor.new(@ole)
 
 report("Wait for bib editor to load.",2)
 bib_editor.wait_for_page_to_load
@@ -191,7 +191,7 @@ report("PO #: #{po_id}")
 report("Open purchase order.")
 @ole.browser.goto(po_url)
 
-purchase_order = OLE_QA::OLEFS::Purchase_Order.new(@ole)
+purchase_order = OLE_QA::Framework::OLEFS::Purchase_Order.new(@ole)
 purchase_order.wait_for_page_to_load
 
 report("Verify purchase order.",1)
@@ -206,7 +206,7 @@ report("Receive purchase order.")
 verify {purchase_order.receiving_button.present?}
 purchase_order.receiving_button.click
 
-receiving_doc = OLE_QA::OLEFS::Receiving_Document.new(@ole)
+receiving_doc = OLE_QA::Framework::OLEFS::Receiving_Document.new(@ole)
 receiving_doc.wait_for_page_to_load
 
 report("Verify receiving line fields.",1)
@@ -223,7 +223,7 @@ report("Receiving Doc #: #{receiving_doc.document_id.text.strip}")
 
 report("Initiate payment request.")
 invoice_number = Array.new(12){rand(36).to_s(36)}.join
-payment_request_create = OLE_QA::OLEFS::PREQ_Creation.new(@ole)
+payment_request_create = OLE_QA::Framework::OLEFS::PREQ_Creation.new(@ole)
 payment_request_create.open
 
 report("PO #: #{po_id}",1)
@@ -238,7 +238,7 @@ payment_request_create.invoice_amount_field.set(po_total)
 report("Create payment request.")
 payment_request_create.continue_button.click
 
-payment_request = OLE_QA::OLEFS::Payment_Request.new(@ole)
+payment_request = OLE_QA::Framework::OLEFS::Payment_Request.new(@ole)
 payment_request.wait_for_page_to_load
 report("Payment Method: Check",1)
 payment_request.payment_method_selector.select("Check")
