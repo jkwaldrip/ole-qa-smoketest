@@ -4,6 +4,7 @@
   :base_url: http://tst.ole.kuali.org/
   :ls_url: http://tst.rice2.ole.kuali.org/
   :explicit_wait: 10
+  :doc_wait: 30
   :implicit_wait: 0
   :headless?: true
   :capabilities?: true

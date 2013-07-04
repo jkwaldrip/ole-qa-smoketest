@@ -170,12 +170,12 @@ report("Requisition Doc #: #{req_doc_id}")
 
 report("Get PO URL.",1)
 report("Wait for requisition to reach \'Closed\' status.",2)
-assert_page(req_url, 30) {requisition.wait_for_page_to_load
+assert_page(req_url) {requisition.wait_for_page_to_load
                           requisition.document_type_status.text.include?("Closed")}
 
 
 report("Wait for PO link to have a valid number.",2)
-assert_page(req_url, 30) {requisition.wait_for_page_to_load
+assert_page(req_url) {requisition.wait_for_page_to_load
                           requisition.view_related_tab_toggle.click
                           requisition.view_related_po_link.wait_until_present
                           requisition.view_related_po_link.text =~ /[0-9]+/}

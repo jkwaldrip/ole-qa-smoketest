@@ -19,4 +19,4 @@ tmp
 .project/
 config/options.yml
 logs/
-lib/config/
+#lib/config/
