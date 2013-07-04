@@ -56,6 +56,7 @@ module OLE_QA::Smoketest
     # @option opts [String] :base_url The base URL for the OLE installation to be tested.
     # @option opts [String] :ls_url The Library System/Rice 2 URL for the OLE installation to be tested.
     # @option opts [Integer] :explicit_wait The wait period (in seconds) to be used for spin asserts.
+    # @option opts [Integer] :doc_wait The wait period (in seconds) to be used for doc status-based spin asserts.
     # @option opts [Integer] :implicit_wait The wait period (in seconds) to be used by the Watir::Browser session.
     #   (This should almost always be 0.)
     # @option opts [String] :name The name to use for this session.
