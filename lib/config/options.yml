@@ -1,18 +1,19 @@
 # Default Kuali OLE Smoketest Configuration Options
-:basic:
-  :browser: :firefox
-  :base_url: http://tst.ole.kuali.org/
-  :ls_url: http://tst.rice2.ole.kuali.org/
-  :explicit_wait: 10
-  :implicit_wait: 0
-  :headless?: true
-  :capabilities?: true
-  # TODO Set :sauce?: to false in development, true in deployment
-  :sauce?: false
+:browser: :firefox
+:base_url: http://tst.ole.kuali.org/
+:ls_url: http://tst.rice2.ole.kuali.org/
+:explicit_wait: 10
+:implicit_wait: 0
+:doc_wait: 45
+:name: OLE Smoketest
+:headless?: true
+:capabilities?: true
+:timestamp?: false
+:logging?: false
+# TODO Set :sauce?: to false in development, true in deployment
+:sauce?: false
 :caps:
   :version: 21
   :platform: Windows 7
-  :name: OLE Smoketest # + v(version) + current date
-:sauce:
-  :username: your-username
-  :api_key: your-api-key
+:sauce_username: your-username
+:sauce_api_key: your-api-key
