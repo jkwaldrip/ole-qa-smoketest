@@ -88,10 +88,11 @@ bib_editor.data_line_1.data_field.set("|aTitle of Book")
 
 report("Submit bib record.",1)
 bib_editor.submit_button.click
+bib_editor.message.wait_until_present
 
 report("Check fields.",2)
-verify {bib_editor.data_line_1.tag_field.text.include?("245")}
-verify {bib_editor.data_line_1.data_field.text.include?("|aTitle of Book")}
+verify {bib_editor.data_line_1.tag_field.value.include?("245")}
+verify {bib_editor.data_line_1.data_field.value.include?("|aTitle of Book")}
 
 report("Check message.",2)
 verify {bib_editor.message.text.include?("successful")}
@@ -207,10 +208,11 @@ verify {purchase_order.receiving_button.present?}
 purchase_order.receiving_button.click
 
 receiving_doc = OLE_QA::Framework::OLEFS::Receiving_Document.new(@ole)
+receiving_doc.create_receiving_line(1)
 receiving_doc.wait_for_page_to_load
 
 report("Verify receiving line fields.",1)
-receiving_doc.create_receiving_line(1)
+receiving_doc.receiving_line_1.description_field.wait_until_present
 verify {receiving_doc.receiving_line_1.item_received_quantity_field.text.include?("1")}
 verify {receiving_doc.receiving_line_1.item_received_parts_field.text.include?("1")}
 

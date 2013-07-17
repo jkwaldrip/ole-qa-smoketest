@@ -33,7 +33,7 @@ report(bib_message,1)
 
 report('Create instance (holdings) record.')
 instance_editor = OLE_QA::Framework::OLELS::Instance_Editor.new(@ole)
-bib_editor.holdings_links[0].click
+bib_editor.holdings_link.click
 instance_editor.wait_for_page_to_load
 report("Location:  B-EDUC/BED-STACKS",1)
 instance_editor.location_field.set("B-EDUC/BED-STACKS")
@@ -47,7 +47,9 @@ report(instance_message,1)
 
 report('Create item record.')
 item_editor = OLE_QA::Framework::OLELS::Item_Editor.new(@ole)
-instance_editor.item_links[0].click
+instance_editor.holdings_icon.click
+instance_editor.item_link.wait_until_present
+instance_editor.item_link.click
 item_editor.wait_for_page_to_load
 report("Call Number: #{call_number}",1)
 item_editor.call_number_field.set(call_number)
