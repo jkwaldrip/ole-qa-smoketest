@@ -33,7 +33,13 @@ report(bib_message,1)
 
 report('Create instance (holdings) record.')
 instance_editor = OLE_QA::Framework::OLELS::Instance_Editor.new(@ole)
-bib_editor.holdings_link.click
+bib_editor.add_instance_button.when_present.click
+# Click the 'Holdings' Header - this will trigger a refresh and open a blank holdings
+# record which cannot be submitted, but will load as a normal instance editor page.
+bib_editor.holdings_link(1).when_present.click
+instance_editor.wait_for_page_to_load
+# Click the actual holdings link and wait for the editor to load once more.
+bib_editor.holdings_link(1).when_present.click
 instance_editor.wait_for_page_to_load
 report("Location:  B-EDUC/BED-STACKS",1)
 instance_editor.location_field.set("B-EDUC/BED-STACKS")
@@ -60,6 +66,8 @@ report("Barcode: #{item_barcode}",1)
 item_editor.barcode_field.set(item_barcode)
 report("Item Status: Available",1)
 item_editor.item_status_selector.select("Available")
+report("Item Type: book",1)
+item_editor.item_type_selector.select("book")
 item_message = item_editor.save_record
 report(item_message,1)
 
