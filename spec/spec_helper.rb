@@ -21,4 +21,4 @@ require "chronic"
 require "ole-qa-framework"
 require "ole-qa-tools"
 
-require "lib/ole-qa-smoketest"
+require "lib/smoketest"
