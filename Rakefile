@@ -1,7 +1,6 @@
 loaddir = File.expand_path(File.dirname(__FILE__))
 $LOAD_PATH.unshift(loaddir) unless $LOAD_PATH.include?(loaddir)
 
-require "bundler/gem_tasks"
 require 'fileutils'
 
 desc "Remove old logfiles."
