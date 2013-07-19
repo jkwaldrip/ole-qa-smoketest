@@ -97,4 +97,5 @@ end
 
 optparse.parse!
 
-test_runner = OLE_QA::Smoketest::Runner.new(options)
+OLE_QA::Smoketest.start(options)
+OLE_QA::Smoketest.quit

@@ -32,7 +32,7 @@ building_lookup.wait_for_page_to_load
 building_lookup.building_name_field.set("Wells Library")
 building_lookup.search_button.click
 building_lookup.wait_for_page_to_load
-building_lookup.set_element(:search_result) {building_lookup.browser.td(:text => "Wells Library").parent.td(:index => 0).a}
+building_lookup.set_element(:search_result) {building_lookup.browser.td(:text => "Wells Library").parent.td(:test_scripts => 0).a}
 verify {building_lookup.search_result.present?}
 building_lookup.search_result.click
 
@@ -55,7 +55,7 @@ vendor_lookup = OLE_QA::Framework::OLEFS::Vendor_Lookup.new(@ole)
 vendor_lookup.wait_for_page_to_load
 vendor_lookup.vendor_name_field.set("YBP")
 vendor_lookup.search_button.click
-vendor_lookup.set_element(:search_result) {vendor_lookup.browser.td(:index => 1).a(:text => "YBP Library Services").parent.parent.td(:index => 0).a}
+vendor_lookup.set_element(:search_result) {vendor_lookup.browser.td(:test_scripts => 1).a(:text => "YBP Library Services").parent.parent.td(:test_scripts => 0).a}
 verify {vendor_lookup.search_result.present?}
 vendor_lookup.search_result.click
 

@@ -10,11 +10,20 @@
 #  distributed under the License is distributed on an "AS IS" BASIS,
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
-#  limitations under the License
+#  limitations under the License.
 
-module OLE_QA
-  module Smoketest
-    # Version number of this project.
-    VERSION = '3.0.0'
+require 'rspec'
+require 'spec_helper'
+
+describe 'The Smoketest Runner class' do
+
+  it 'should run a single example test script' do
+    test = OLE_QA::Smoketest::Runner.run('Pass Example')
+    test.results[:outcome].should be_true
+  end
+
+  it 'should run all test scripts' do
+    test_names = OLE_QA::Smoketest::Runner.run
+    test_names.sort.should == OLE_QA::Smoketest.test_scripts.keys.sort
   end
 end

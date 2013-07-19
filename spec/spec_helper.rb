@@ -22,3 +22,4 @@ require "ole-qa-framework"
 require "ole-qa-tools"
 
 require "lib/smoketest"
+require 'spec/example/example'
