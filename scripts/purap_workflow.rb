@@ -75,9 +75,7 @@ report("Wait for bib editor to load.",2)
 bib_editor.wait_for_page_to_load
 
 report("Enter control field 008.",2)
-bib_editor.control_008_link.click
-bib_editor.control_008_field.wait_until_present
-bib_editor.control_008_field.set("HELLOWORLD")
+bib_editor.control_008_field.when_present.set("HELLOWORLD")
 
 report("Set header info.",2)
 bib_editor.set_button.click
