@@ -18,18 +18,30 @@ require 'spec_helper'
 describe 'A TestScript object' do
 
   before :all do
-    class Example < OLE_QA::Smoketest::TestScript
-      def self.run
-        true
+
+    # Building temporary test script
+    # FIXME Move to spec/fixtures
+    module OLE_QA::Smoketest::TestScripts
+      class Example < OLE_QA::Smoketest::TestScripts::Script
+        def self.run
+          true
+        end
+        self.set_name("Example")
       end
     end
 
   end
 
   it 'should run a test' do
-    example = Example.run
+    example = OLE_QA::Smoketest::TestScripts::Example.run
     example.should be_true
   end
+
+  it 'should name tests appropriately' do
+    OLE_QA::Smoketest::TestScripts::Example.test_name.should == 'Example'
+    OLE_QA::Smoketest::TestScripts.index.keys.include?("Example").should be_true
+  end
+
 
   it 'should have an OLE Smoketest Session accessor' do
   end
