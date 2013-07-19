@@ -90,15 +90,9 @@ optparse = OptionParser.new do |opts|
     exit
   end
 
-  opts.on('-T','--test-script FILENAME',"Run a specific test script.\n        (Argument must be a filename in \'scripts/\'.)") do |testscript|
-    testscript += ".rb" unless testscript =~ /\.rb$/
-    loaddir = File.dirname(__FILE__)
-    testscript = loaddir + "/scripts/" + testscript
-    raise OLE_QA::Smoketest::Error,"File does not exist:  #{testscript}" unless File.exists?(testscript)
+  opts.on('-T','--test-script "Test Name"',String,"Run a specific test script.") do |testscript|
     options[:testscript] = testscript
   end
-
-  opts.on
 end
 
 optparse.parse!
