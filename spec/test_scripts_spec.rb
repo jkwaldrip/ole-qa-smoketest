@@ -17,6 +17,14 @@ require 'spec_helper'
 
 describe 'An OLE Smoketest Test Script' do
 
+  before :all do
+    OLE_QA::Smoketest.start
+  end
+
+  after :all do
+    OLE_QA::Smoketest.quit
+  end
+
   it 'should run without error' do
     OLE_QA::Smoketest::TestScripts::PassExample.new
   end
@@ -31,5 +39,10 @@ describe 'An OLE Smoketest Test Script' do
   it 'should be able to access the OLE Smoketest Session' do
     session = OLE_QA::Smoketest::TestScripts::SessionExample.new
     session.results[:outcome].should be_true
+  end
+
+  it 'should be able to access the OLE Framework Session' do
+    ole = OLE_QA::Smoketest::TestScripts::FrameworkExample.new
+    ole.results[:outcome].should be_true
   end
 end

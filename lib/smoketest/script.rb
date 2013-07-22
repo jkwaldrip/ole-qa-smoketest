@@ -45,6 +45,14 @@ module OLE_QA::Smoketest
     # Make the test script's name available after instantiation.
     attr_reader :test_name
 
+    # Make a local alias for Smoketest Session.
+    # @note Returns nil unless session is running.  {OLE_QA::Smoktest#start}
+    attr_accessor :session
+
+    # Make a local alias for OLE Framework.
+    # @note Returns nil unless session is running.  {OLE_QA::Smoktest#start}
+    attr_accessor :ole
+
     class << self
       # Add the name of the test to the test script index upon first load.
       def set_name(name_str)
@@ -60,12 +68,15 @@ module OLE_QA::Smoketest
       # Retrieve test name from test script index.
       @test_name = OLE_QA::Smoketest.test_scripts.invert[self.class.name.split('::')[-1]]
 
+      # Initialize instance.
       @results = Hash.new
+      @session = OLE_QA::Smoketest.session
+      @ole = OLE_QA::Smoketest.ole
 
       # Run the actual test steps.
       @results[:time] = Benchmark.realtime do
         begin
-          self.run if defined?(self.run)
+          self.run if defined?(run)
           @results[:outcome] = true
         rescue Watir::Wait::TimeoutError, Watir::Exception::UnknownObjectException, OLE_QA::Tools::Error, StandardError => e
           @results[:outcome] = false
@@ -76,18 +87,6 @@ module OLE_QA::Smoketest
       # Report the results.
       @results[:outcome] ? outcome_str = 'Pass' : outcome_str = 'Fail'
       @results[:final] = @test_name.ljust(20) + '-- ' + outcome_str + " (#{@results[:time]})"
-    end
-
-    # Make a local alias for Smoketest Session.
-    # @note Returns nil if Runner is not instantiated to $runner.
-    def session
-      OLE_QA::Smoketest.session
-    end
-
-    # Make a local alias for OLE Framework.
-    # @note Returns nil if Runner is not instantiated to $runner.
-    def ole
-      OLE_QA::Smoketest.ole
     end
 
     # Local alias for {OLE_QA::Smoketest::Session#report}

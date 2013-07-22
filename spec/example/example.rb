@@ -38,4 +38,11 @@ module OLE_QA::Smoketest::TestScripts
       raise StandardError, "Error" unless self.session.class == OLE_QA::Smoketest::Session
     end
   end
+
+  class FrameworkExample < OLE_QA::Smoketest::Script
+    self.set_name('Framework Session Example')
+    def run
+      raise StandardError, "Error" unless self.ole.class == OLE_QA::Framework::Session
+    end
+  end
 end
