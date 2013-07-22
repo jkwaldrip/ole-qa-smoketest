@@ -85,7 +85,7 @@ module OLE_QA::Smoketest
       # Run the actual test steps.
       @results[:time] = Benchmark.realtime do
         begin
-          report(@header.ljust(25) + '  -- Begin.')
+          report(@header.ljust(25) + '-- Begin.')
           self.run if defined?(run)
           @results[:outcome] = true
         rescue Watir::Wait::TimeoutError, Watir::Exception::UnknownObjectException,\
@@ -93,7 +93,7 @@ module OLE_QA::Smoketest
           Errno::ECONNREFUSED, StandardError => e
           @results[:outcome] = false
         ensure
-          report(@header.ljust(25) + '  -- End.')
+          report(@header.ljust(25) + '-- End.')
         end
       end
       @results[:time] = self.format_time(@results[:time])
