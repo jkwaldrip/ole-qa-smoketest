@@ -45,11 +45,16 @@ module OLE_QA
       attr_accessor :test_scripts
 
       # Start an {OLE_QA::Smoketest::Session} and set up the necessary instance variables.
-      def start(options = {})
-        @options = options
+      # @param opts [Hash] Options hash to be passed to {OLE_QA::Smoketest::Session}
+      # @option opts [Boolean] :dry_run?  Do not run test scripts at start.
+      def start(opts = {})
+        @options = opts
         @session = OLE_QA::Smoketest::Session.new(@options)
         @ole     = @session.framework
-        OLE_QA::Smoketest::Runner.run(@options[:testscript])
+        unless opts[:dry_run?]
+          opts[:testscript] ? OLE_QA::Smoketest::Runner.run(opts[:testscript]) : OLE_QA::Smoketest::Runner.run
+        end
+
       end
 
       # Perform {OLE_QA::Smoketest::Session} teardowns and exit the program.
@@ -73,5 +78,8 @@ module OLE_QA
     # Add custom error type.
     class Error < StandardError
     end
+
+    # Require test scripts.
+    Dir["#{LoadDir}/scripts/*.rb"].each {|file| require file}
   end
 end

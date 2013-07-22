@@ -36,7 +36,7 @@ optparse = OptionParser.new do |opts|
     exit
   end
 
-  opts.on('-l','--log [FILENAME]',"Log output to file, filename optional. \n        (Defaults to Smoketest-YYYY-MM-DD-HHMM.log)") do |logfile|
+  opts.on('-l','--log [FILENAME]',String,"Log output to file, filename optional. \n        (Defaults to Smoketest-YYYY-MM-DD-HHMM.log)") do |logfile|
     options[:logging?] = true
     options[:logfile] = logfile || "Smoketest-#{OLE_QA::Smoketest::StartTime}.log"
     options[:logfile] += ".log" unless options[:logfile] =~ /\.log$/
@@ -85,8 +85,11 @@ optparse = OptionParser.new do |opts|
     options[:explicit_wait] = wait_timeout.to_i
   end
 
-  opts.on('-L','--ls',"List all files in scripts/ and exit.") do
-    Dir["scripts/*.rb"].sort.each {|line| puts line.gsub("scripts/",'')}
+  opts.on('-L','--ls',"List all available test scripts and exit.") do
+    puts "  Available Tests"
+    OLE_QA::Smoketest.test_scripts.sort.each do |k,v|
+      puts "     - #{k}"
+    end
     exit
   end
 
