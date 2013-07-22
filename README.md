@@ -6,16 +6,20 @@ It contains a command-line interface (ole-qa-smoketest/ole-smoketest.rb), and re
 model.  The [OLE QA Tools](http://www.github.com/jkwaldrip/ole-qa-tools) gem provides additional testing functionality
 such as spin asserts and OLE-specific data (e.g., pre-selected accounting strings from the KFS IU sample data).
 
-## CLI Usage
+## Command-Line Usage
 
-    ./ole-smoketest.rb -hvtsL -l [FILENAME] -n NAME -b BROWSER -B VERSION -p OS -U UNAME -K KEY
-        -w NN -T SCRIPT.RB
+    ./ole-smoketest.rb -hvqtsL -l [FILENAME] -n NAME -b BROWSER -B VERSION -p OS -U UNAME -K KEY
+        -w NN -T 'Test Name'
 
     -h/--help
         Print the help screen and exit.
 
     -v/--version
         Print the version number and exit.
+
+    -q/--quiet-mode
+        Run the smoketest in quiet mode.
+        (Suppress command-line output.)
 
     -t/--timestamp
         Use timestamps in output.  (Defaults to no.)
@@ -62,8 +66,8 @@ such as spin asserts and OLE-specific data (e.g., pre-selected accounting string
         submission.
 
     -T/--test-script FILENAME.rb
-        Specify a single test script to be run instead of running all in 'scripts/'.  This option
-        requires the filename to refer to a Ruby (.rb) file in the 'scripts/' directory.
+        Run a specific test script by name.
+        (Use -L/--ls to get a list of test scripts by name.)
 
 
 ## Dependencies

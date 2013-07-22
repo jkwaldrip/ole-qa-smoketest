@@ -36,6 +36,10 @@ optparse = OptionParser.new do |opts|
     exit
   end
 
+  opts.on('-q','--quiet-mode', "Run the smoketest in quiet-mode.\n        (Suppress command-line output.)") do
+    options[:quiet?] = true
+  end
+
   opts.on('-l','--log [FILENAME]',String,"Log output to file, filename optional. \n        (Defaults to Smoketest-YYYY-MM-DD-HHMM.log)") do |logfile|
     options[:logging?] = true
     options[:logfile] = logfile || "Smoketest-#{OLE_QA::Smoketest::StartTime}.log"
@@ -93,12 +97,8 @@ optparse = OptionParser.new do |opts|
     exit
   end
 
-  opts.on('-T','--test-script "Test Name"',String,"Run a specific test script.") do |testscript|
+  opts.on('-T','--test-script "Test Name"',String,"Run a specific test script by name.\n        (Use -L/--ls to get a list of test scripts by name.)") do |testscript|
     options[:testscript] = testscript
-  end
-
-  opts.on('-q','--quiet-mode') do
-    options[:quiet?] = true
   end
 end
 
