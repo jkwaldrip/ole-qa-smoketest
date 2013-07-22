@@ -92,6 +92,8 @@ module OLE_QA::Smoketest
          Selenium::WebDriver::Error::StaleElementReferenceError, OLE_QA::Tools::Error,\
           Errno::ECONNREFUSED, StandardError => e
           @results[:outcome] = false
+            report e.backtrace[0],1
+            report e.backtrace[-1],1
         ensure
           report(@header.ljust(25) + '-- End.')
         end
