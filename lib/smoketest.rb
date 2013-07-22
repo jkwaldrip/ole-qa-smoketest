@@ -54,7 +54,6 @@ module OLE_QA
         unless opts[:dry_run?]
           opts[:testscript] ? OLE_QA::Smoketest::Runner.run(opts[:testscript]) : OLE_QA::Smoketest::Runner.run
         end
-
       end
 
       # Perform {OLE_QA::Smoketest::Session} teardowns and exit the program.
