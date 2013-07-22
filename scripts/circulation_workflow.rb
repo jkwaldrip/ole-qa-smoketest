@@ -98,6 +98,11 @@ module OLE_QA::Smoketest::TestScripts
       report("Enter Item Barcode: #{item_barcode}",1)
       loan_screen.item_field.wait_until_present
       loan_screen.item_field.set("#{item_barcode}\n")
+      # The loan pop-up box may appear here with a due date or a circulation desk mismatch warning.
+      # Click the loan button only if the loan pop-up box appears.
+      if verify {loan_screen.loan_popup_box.present?}
+        loan_screen.loan_button.when_present.click
+      end
       loan_screen.item_barcode_link(1).wait_until_present
       verify_barcode = loan_screen.item_barcode_link.text.strip == item_barcode
       report("Barcode Verified?  #{verify_barcode}",1)
