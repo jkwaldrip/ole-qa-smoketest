@@ -18,7 +18,7 @@ require 'spec_helper'
 describe 'An OLE Smoketest Test Script' do
 
   before :all do
-    OLE_QA::Smoketest.start
+    OLE_QA::Smoketest.start(:dry_run? => true)
   end
 
   after :all do
