@@ -206,23 +206,23 @@ module OLE_QA::Smoketest::TestScripts
 
       report("Receive purchase order.")
       verify {purchase_order.receiving_button.present?}
-      purchase_order.receiving_button.click
+      # purchase_order.receiving_button.click
 
-      receiving_doc = OLE_QA::Framework::OLEFS::Receiving_Document.new(@ole)
-      receiving_doc.create_receiving_line(1)
-      receiving_doc.wait_for_page_to_load
+      # receiving_doc = OLE_QA::Framework::OLEFS::Receiving_Document.new(@ole)
+      # receiving_doc.create_receiving_line(1)
+      # receiving_doc.wait_for_page_to_load
 
-      report("Verify receiving line fields.",1)
-      receiving_doc.receiving_line_1.description_field.wait_until_present
-      verify {receiving_doc.receiving_line_1.item_received_quantity_field.text.include?("1")}
-      verify {receiving_doc.receiving_line_1.item_received_parts_field.text.include?("1")}
+      # report("Verify receiving line fields.",1)
+      # receiving_doc.receiving_line_1.description_field.wait_until_present
+      # verify {receiving_doc.receiving_line_1.item_received_quantity_field.text.include?("1")}
+      # verify {receiving_doc.receiving_line_1.item_received_parts_field.text.include?("1")}
 
-      report("Submit receiving document.")
-      receiving_doc.submit_button.click
-      receiving_doc.wait_for_page_to_load
-      assert {receiving_doc.submit_message.present?}
+      # report("Submit receiving document.")
+      # receiving_doc.submit_button.click
+      # receiving_doc.wait_for_page_to_load
+      # assert {receiving_doc.submit_message.present?}
 
-      report("Receiving Doc #: #{receiving_doc.document_id.text.strip}")
+      # report("Receiving Doc #: #{receiving_doc.document_id.text.strip}")
 
       report("Initiate payment request.")
       invoice_number = Array.new(12){rand(36).to_s(36)}.join
