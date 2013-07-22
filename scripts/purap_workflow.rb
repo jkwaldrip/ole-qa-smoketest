@@ -21,8 +21,8 @@ module OLE_QA::Smoketest::TestScripts
       requisition = OLE_QA::Framework::OLEFS::Requisition.new(@ole)
       requisition.open
 
-      report("Set description to #{@name}.",1)
-      requisition.description_field.set(@name)
+      report("Set description to #{@test_name}.",1)
+      requisition.description_field.set(@test_name)
 
       report("Set delivery building & room number.",1)
       requisition.delivery_tab_toggle.click
