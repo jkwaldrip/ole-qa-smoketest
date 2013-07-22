@@ -24,7 +24,7 @@ module OLE_QA
           raise OLE_QA::Smoketest::Error unless OLE_QA::Smoketest.test_scripts.include?(testscript)
           self.run_one(testscript)
         else
-          OLE_QA::Smoketest.test_scripts.keys.each {|script_name| self.run_one(script_name)}
+          OLE_QA::Smoketest.test_scripts.keys.sort.each {|script_name| self.run_one(script_name)}
         end
       end
 
