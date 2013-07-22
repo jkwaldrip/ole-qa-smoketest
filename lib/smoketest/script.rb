@@ -45,6 +45,9 @@ module OLE_QA::Smoketest
     # Make the test script's name available after instantiation.
     attr_reader :test_name
 
+    # Give the test script's header as used in log files and on-screen reporting.
+    attr_reader :header
+
     # Make a local alias for Smoketest Session.
     # @note Returns nil unless session is running.  {OLE_QA::Smoktest#start}
     attr_accessor :session
@@ -73,25 +76,38 @@ module OLE_QA::Smoketest
       @session = OLE_QA::Smoketest.session
       @ole = OLE_QA::Smoketest.ole
 
+      # @test_header starts with sequential number of test script unless it is the only one running.
+      OLE_QA::Smoketest.options[:testscript] ?
+          @header = '' :
+          @header = (OLE_QA::Smoketest.test_scripts.keys.sort.index(@test_name) + 1).to_s + '. '
+      @header += @test_name
+
       # Run the actual test steps.
       @results[:time] = Benchmark.realtime do
         begin
+          report(@header.ljust(25) + '  -- Begin.')
           self.run if defined?(run)
           @results[:outcome] = true
-        rescue Watir::Wait::TimeoutError, Watir::Exception::UnknownObjectException, Selenium::WebDriver::Error::StaleElementReferenceError, OLE_QA::Tools::Error, StandardError => e
+        rescue Watir::Wait::TimeoutError, Watir::Exception::UnknownObjectException,\
+         Selenium::WebDriver::Error::StaleElementReferenceError, OLE_QA::Tools::Error,\
+          Errno::ECONNREFUSED, StandardError => e
           @results[:outcome] = false
+        ensure
+          report(@header.ljust(25) + '  -- End.')
         end
       end
       @results[:time] = self.format_time(@results[:time])
 
       # Report the results.
       @results[:outcome] ? outcome_str = 'Pass' : outcome_str = 'Fail'
-      @results[:final] = @test_name.ljust(20) + '-- ' + outcome_str + " (#{@results[:time]})"
+      @results[:final] = @header.ljust(25) + '-- ' + outcome_str + " (#{@results[:time]})"
+      puts @results[:final] if OLE_QA::Smoketest.options[:logging?]
+      report(@results[:final])
     end
 
     # Local alias for {OLE_QA::Smoketest::Session#report}
     def report(str, hash_indent=0)
-      session.report(str, hash_indent)
+      @session.report(str, hash_indent)
     end
 
     # Format the runtime for the current test.
