@@ -28,9 +28,16 @@ describe 'The Script class' do
     OLE_QA::Smoketest.test_scripts.delete('Foo')
   end
 
-  it 'should set a number on the test header if started with multiple scripts' do
+  it 'should set a number on the header if started with multiple scripts' do
     test = OLE_QA::Smoketest::TestScripts::PassExample.new
     expected_header_num = (OLE_QA::Smoketest.test_scripts.keys.sort.index(test.test_name) +1).to_s
     test.header.match(/(^\d+)/).to_s.should == expected_header_num
+  end
+
+  it 'should not set a number on the header if started with only one script' do
+    OLE_QA::Smoketest.start(:dry_run? => true, :quiet? => true, :testscript => 'Pass Example')
+    test = OLE_QA::Smoketest::TestScripts::PassExample.new
+    expected_header_num = (OLE_QA::Smoketest.test_scripts.keys.sort.index(test.test_name) +1).to_s
+    test.header.match(/(^\d+)/).to_s.should_not == expected_header_num
   end
 end
