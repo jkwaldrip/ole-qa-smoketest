@@ -21,10 +21,6 @@ describe 'An OLE Smoketest Test Script' do
     OLE_QA::Smoketest.start(:dry_run? => true, :quiet? => true)
   end
 
-  after :all do
-    OLE_QA::Smoketest.quit
-  end
-
   it 'should run without error' do
     OLE_QA::Smoketest::TestScripts::PassExample.new
   end

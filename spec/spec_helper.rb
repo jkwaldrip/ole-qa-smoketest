@@ -25,3 +25,9 @@ require "lib/smoketest"
 
 OLE_QA::Smoketest.start(:dry_run? => true, :quiet? => true)
 require 'spec/example/example'
+
+RSpec.configure do |config|
+  config.after(:suite) do
+    OLE_QA::Smoketest.quit
+  end
+end

@@ -21,10 +21,6 @@ describe 'The Script class' do
     OLE_QA::Smoketest.start(:dry_run? => true, :quiet? => true)
   end
 
-  after :all do
-    OLE_QA::Smoketest.quit
-  end
-
   it 'should set the name of a test' do
     OLE_QA::Smoketest::Script.set_name('Foo')
     OLE_QA::Smoketest::Script.test_name.should == 'Foo'

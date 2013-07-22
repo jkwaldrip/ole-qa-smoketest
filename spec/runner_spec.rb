@@ -21,10 +21,6 @@ describe 'The Smoketest Runner class' do
     OLE_QA::Smoketest.start(:dry_run? => true, :quiet? => true)
   end
 
-  after :all do
-    OLE_QA::Smoketest.quit
-  end
-
   it 'should run a single example test script' do
     test = OLE_QA::Smoketest::Runner.run('Pass Example')
     test.results[:outcome].should be_true
