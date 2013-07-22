@@ -136,11 +136,7 @@ module OLE_QA::Smoketest
         hash_indent.times {string = '#' + string}
       end
       string = Time.new.strftime("%H:%M:%S ") + string if @opts[:timestamp?]
-      if @opts[:logging?] then
-        @logfile.puts(string)
-      else
-        puts(string)
-      end
+      @opts[:logging?] ? @logfile.puts(string) : puts(string) unless @opts[:quiet?]
     end
 
     # Exit the OLE_QA::Smoketest::Session, quitting the browser and destroying the headless session if it exists.

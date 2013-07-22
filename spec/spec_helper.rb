@@ -23,5 +23,5 @@ require "ole-qa-tools"
 
 require "lib/smoketest"
 
-OLE_QA::Smoketest.start(:dry_run? => true)
+OLE_QA::Smoketest.start(:dry_run? => true, :quiet? => true)
 require 'spec/example/example'

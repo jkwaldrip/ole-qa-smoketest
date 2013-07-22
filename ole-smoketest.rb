@@ -96,6 +96,10 @@ optparse = OptionParser.new do |opts|
   opts.on('-T','--test-script "Test Name"',String,"Run a specific test script.") do |testscript|
     options[:testscript] = testscript
   end
+
+  opts.on('-q','--quiet-mode') do
+    options[:quiet?] = true
+  end
 end
 
 optparse.parse!

@@ -101,7 +101,7 @@ module OLE_QA::Smoketest
       # Report the results.
       @results[:outcome] ? outcome_str = 'Pass' : outcome_str = 'Fail'
       @results[:final] = @header.ljust(25) + '-- ' + outcome_str + " (#{@results[:time]})"
-      puts @results[:final] if OLE_QA::Smoketest.options[:logging?]
+      puts @results[:final] if OLE_QA::Smoketest.options[:logging?] && !OLE_QA::Smoketest.options[:quiet?]
       report(@results[:final])
     end
 
