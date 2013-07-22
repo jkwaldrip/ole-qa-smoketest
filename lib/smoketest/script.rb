@@ -78,7 +78,7 @@ module OLE_QA::Smoketest
         begin
           self.run if defined?(run)
           @results[:outcome] = true
-        rescue Watir::Wait::TimeoutError, Watir::Exception::UnknownObjectException, OLE_QA::Tools::Error, StandardError => e
+        rescue Watir::Wait::TimeoutError, Watir::Exception::UnknownObjectException, Selenium::WebDriver::Error::StaleElementReferenceError, OLE_QA::Tools::Error, StandardError => e
           @results[:outcome] = false
         end
       end
