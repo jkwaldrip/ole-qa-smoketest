@@ -15,10 +15,9 @@
 module OLE_QA::Smoketest::TestScripts
   # Test Select & Acquire PURAP Document Workflow from requisition to payment request.
   class PurapWorkflow < OLE_QA::Smoketest::Script
-    set_name("PURAP Workflow Test")
+    self.set_name("PURAP Workflow Test")
     def run
-      report("Opening new requisition.",1)
-
+      report("Open new requisition.",1)
       requisition = OLE_QA::Framework::OLEFS::Requisition.new(@ole)
       requisition.open
 
@@ -36,7 +35,7 @@ module OLE_QA::Smoketest::TestScripts
       building_lookup.building_name_field.set("Wells Library")
       building_lookup.search_button.click
       building_lookup.wait_for_page_to_load
-      building_lookup.set_element(:search_result) {building_lookup.browser.td(:text => "Wells Library").parent.td(:test_scripts => 0).a}
+      building_lookup.set_element(:search_result) {building_lookup.browser.td(:text => "Wells Library").parent.td(:index => 0).a}
       verify {building_lookup.search_result.present?}
       building_lookup.search_result.click
 
@@ -59,7 +58,7 @@ module OLE_QA::Smoketest::TestScripts
       vendor_lookup.wait_for_page_to_load
       vendor_lookup.vendor_name_field.set("YBP")
       vendor_lookup.search_button.click
-      vendor_lookup.set_element(:search_result) {vendor_lookup.browser.td(:test_scripts => 1).a(:text => "YBP Library Services").parent.parent.td(:test_scripts => 0).a}
+      vendor_lookup.set_element(:search_result) {vendor_lookup.browser.td(:index => 1).a(:text => "YBP Library Services").parent.parent.td(:index => 0).a}
       verify {vendor_lookup.search_result.present?}
       vendor_lookup.search_result.click
 
@@ -79,9 +78,7 @@ module OLE_QA::Smoketest::TestScripts
       bib_editor.wait_for_page_to_load
 
       report("Enter control field 008.",2)
-      bib_editor.control_008_link.click
-      bib_editor.control_008_field.wait_until_present
-      bib_editor.control_008_field.set("HELLOWORLD")
+      bib_editor.control_008_field.when_present.set("HELLOWORLD")
 
       report("Set header info.",2)
       bib_editor.set_button.click
@@ -176,14 +173,14 @@ module OLE_QA::Smoketest::TestScripts
       report("Get PO URL.",1)
       report("Wait for requisition to reach \'Closed\' status.",2)
       assert_page(req_url) {requisition.wait_for_page_to_load
-      requisition.document_type_status.text.include?("Closed")}
+                                requisition.document_type_status.text.include?("Closed")}
 
 
       report("Wait for PO link to have a valid number.",2)
       assert_page(req_url) {requisition.wait_for_page_to_load
-      requisition.view_related_tab_toggle.click
-      requisition.view_related_po_link.wait_until_present
-      requisition.view_related_po_link.text =~ /[0-9]+/}
+                                requisition.view_related_tab_toggle.click
+                                requisition.view_related_po_link.wait_until_present
+                                requisition.view_related_po_link.text =~ /[0-9]+/}
 
       report("Retrieve URL from View Related tab.",2)
       requisition.view_related_po_link.wait_until_present
@@ -253,6 +250,7 @@ module OLE_QA::Smoketest::TestScripts
 
       payment_request.wait_for_page_to_load
       payment_request.approve_button.click
+
       report("Payment request approved.") unless payment_request.generic_message.present?
     end
   end

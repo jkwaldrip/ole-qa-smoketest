@@ -22,9 +22,7 @@ module OLE_QA::Smoketest::TestScripts
       bib_editor = OLE_QA::Framework::OLELS::Bib_Editor.new(@ole)
       bib_editor.open
       bib_editor.set_button.click
-      bib_editor.control_008_link.click
-      bib_editor.control_008_field.wait_until_present
-      bib_editor.control_008_field.set("CirculationSmokeTest")
+      bib_editor.control_008_field.when_present.set("CirculationSmokeTest")
       bib_editor.data_line_1.tag_field.set("245")
       bib_editor.data_line_1.data_field.set("|aCirculation Smoke Test")
       bib_editor.data_line_1.add_button.click
@@ -38,11 +36,11 @@ module OLE_QA::Smoketest::TestScripts
       report('Create instance (holdings) record.')
       instance_editor = OLE_QA::Framework::OLELS::Instance_Editor.new(@ole)
       bib_editor.add_instance_button.when_present.click
-# Click the 'Holdings' Header - this will trigger a refresh and open a blank holdings
-# record which cannot be submitted, but will load as a normal instance editor page.
+      # Click the 'Holdings' Header - this will trigger a refresh and open a blank holdings
+      # record which cannot be submitted, but will load as a normal instance editor page.
       bib_editor.holdings_link(1).when_present.click
       instance_editor.wait_for_page_to_load
-# Click the actual holdings link and wait for the editor to load once more.
+      # Click the actual holdings link and wait for the editor to load once more.
       bib_editor.holdings_link(1).when_present.click
       instance_editor.wait_for_page_to_load
       report("Location:  B-EDUC/BED-STACKS",1)
@@ -100,22 +98,11 @@ module OLE_QA::Smoketest::TestScripts
       report("Enter Item Barcode: #{item_barcode}",1)
       loan_screen.item_field.wait_until_present
       loan_screen.item_field.set("#{item_barcode}\n")
-      loan_screen.loan_popup_box.wait_until_present
-      three_days = Chronic.parse('3 days 4 hours from now')
-      due_date = three_days.strftime("%m/%d/%Y")
-      due_time = three_days.strftime("%k:%m")
-      expected_date = three_days.strftime("%m/%d/%Y %I:%m %p")
-      report("Due Date: #{due_date}",1)
-      loan_screen.due_date_field.set(due_date)
-      report("Due Time: #{due_time}",1)
-      loan_screen.due_time_field.set(due_time)
-      loan_screen.loan_button.click
-      loan_screen.loan_popup_box.wait_while_present
       loan_screen.item_barcode_link(1).wait_until_present
       verify_barcode = loan_screen.item_barcode_link.text.strip == item_barcode
       report("Barcode Verified?  #{verify_barcode}",1)
-      verify_date = loan_screen.item_due_date(1).text.strip == expected_date
-      report("Due Date Verified?  #{verify_date}",1)
+      due_date = loan_screen.item_due_date(1).text.strip
+      report("Due Date: #{due_date}",1)
 
       report("Checkin Item.")
       loan_screen.return_button.click
