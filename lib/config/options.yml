@@ -10,6 +10,8 @@
 :capabilities?: true
 :timestamp?: false
 :logging?: false
+:dry_run?: false
+:quiet?: false
 # TODO Set :sauce?: to false in development, true in deployment
 :sauce?: false
 :caps:
