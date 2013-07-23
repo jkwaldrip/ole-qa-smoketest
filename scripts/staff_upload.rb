@@ -10,11 +10,15 @@
 #  distributed under the License is distributed on an "AS IS" BASIS,
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
-#  limitations under the License
+#  limitations under the License.
 
-module OLE_QA
-  module Smoketest
-    # Version number of this project.
-    VERSION = '3.1.0'
+module OLE_QA::Smoketest::TestScripts
+  # Test for single upload of paired Marc/EDI electronic order batch files.
+  class StaffUpload < OLE_QA::Smoketest::Script
+    self.set_name('Staff Upload')
+
+    def run
+
+    end
   end
 end
