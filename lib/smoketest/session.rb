@@ -123,6 +123,8 @@ module OLE_QA::Smoketest
       if @opts[:logging?]
         @logfile = File.open('logs/' + @opts[:logfile], 'a')
         report("--START--")
+        report("Financial System URL:  #{@opts[:base_url]}")
+        report("Library System URL:    #{@opts[:ls_url]}")
         report(@name)
        end
     end
