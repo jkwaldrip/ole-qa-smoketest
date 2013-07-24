@@ -26,7 +26,7 @@ module OLE_QA::Smoketest::TestScripts
       now_ish = Chronic.parse('now').strftime('%Y/%m/%d %H:%k %Z')
       upload_desc = "Smoketest #{now_ish} -- " + eocr[0]
 
-          report('Open Staff Upload screen.')
+      report('Open Staff Upload screen.')
       upload_screen = OLE_QA::Framework::OLELS::Staff_Upload.new(@ole)
       upload_screen.open
       report('Enter Marc file.',1)
@@ -42,7 +42,7 @@ module OLE_QA::Smoketest::TestScripts
       outcome_message = upload_screen.upload
       report('Upload Result:',1)
       report(outcome_message,2)
-      raise StandardError, "Upload not successful.\n#{outcome_message}" unless outcome_message =~ /executed successfully/
+      raise StandardError, "Upload not successful.\n#{outcome_message}" unless outcome_message =~ /successfully/
 
       report('Return to OLE Financial System Main Menu.')
       main_menu = OLE_QA::Framework::OLEFS::Main_Menu.new(@ole)
@@ -56,13 +56,13 @@ module OLE_QA::Smoketest::TestScripts
         lookup.open
         lookup.wait_for_page_to_load
         lookup.description_field.when_present.set(upload_desc)
-        lookup.date_to_field.when_present.set(today)
+        lookup.date_from_field.when_present.set(today)
         lookup.search_button.click
         lookup.wait_for_page_to_load
         i += 1
         lookup.b.table(:id => 'row').present?
       }
-      report("Attempted #{i} times.",2)
+      report("Attempted search #{i} times.",2)
 
       report("Results present?  #{lookup.row_by_text(upload_desc).present?}")
       load_report_id = lookup.doc_link_by_text(upload_desc).text.strip
@@ -71,8 +71,15 @@ module OLE_QA::Smoketest::TestScripts
       report('Open load report.')
       load_report_url = @ole.base_url + OLE_QA::Tools::URLs.load_report(load_report_id)
       load_report = OLE_QA::Framework::OLEFS::Load_Report.new(@ole)
-      @ole.browser.open(load_report_url)
-      load_report.wait_for_page_to_load
+      i = 1
+      page_assert('',90) {
+        @ole.open(load_report_url)
+        load_report.wait_for_page_to_load
+        i += 1
+        load_report.counts.text.match(/TOTAL\:\s+\d+.*\sSUCCESS\:\s+\d+.*FAILED\:\s+\d+/)
+      }
+      report("Load report open attempted #{i} times.",2)
+
       total_count = load_report.total_count
       success_count = load_report.success_count
       failure_count = load_report.failure_count
