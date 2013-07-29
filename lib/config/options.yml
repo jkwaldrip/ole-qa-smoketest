@@ -1,9 +1,9 @@
 # Default Kuali OLE Smoketest Configuration Options
 :browser: :firefox
 :url: http://tst.ole.kuali.org/
-:explicit_wait: 10
+:explicit_wait: 60
 :implicit_wait: 0
-:doc_wait: 45
+:doc_wait: 90
 :name: OLE Smoketest
 :headless?: true
 :capabilities?: true
