@@ -33,8 +33,8 @@ module OLE_QA
     # Path to lib/..
     LoadDir = LibDir + "/../"
 
-    Dir["#{LibDir}/smoketest/*.rb"].each {|file| require file}
-    Dir["#{LibDir}/smoketest/*/*.rb"].each {|file| require file}
+    Dir["#{LibDir}/smoketest/*.rb"].sort.each {|file| require file}
+    Dir["#{LibDir}/smoketest/*/*.rb"].sort.each {|file| require file}
 
     # Create index of all test scripts.
     # e.g. {['Name of Test'] => TestClass}
@@ -48,9 +48,12 @@ module OLE_QA
       # @param opts [Hash] Options hash to be passed to {OLE_QA::Smoketest::Session}
       # @option opts [Boolean] :dry_run?  Do not run test scripts at start.
       def start(opts = {})
-        @options = opts
-        @session = OLE_QA::Smoketest::Session.new(@options)
-        @ole     = @session.framework
+        @options    = opts
+        @session    = OLE_QA::Smoketest::Session.new(@options)
+        @ole        = @session.framework
+        @wait       = @session.opts[:explicit_wait]
+        @url        = @session.opts[:url]
+        Dir["#{LibDir}/smoketest/overrides/*.rb"].sort.each {|file| require file}
         unless opts[:dry_run?]
           opts[:testscript] ? OLE_QA::Smoketest::Runner.run(opts[:testscript]) : OLE_QA::Smoketest::Runner.run
         end
@@ -65,8 +68,15 @@ module OLE_QA
       # View the options with which the Smoketest Session was started.
       attr_reader :options
 
+      # Provide a reader accessor for the explicit wait option.
+      attr_reader :wait
+
+      # Provide a reader for the URL being tested.
+      attr_reader :url
+
       # Provide access to the Smoketest Session and its ole-qa-framework session.
-      attr_accessor :session, :ole
+      attr_reader :session, :ole
+      alias_method(:framework, :ole)
     end
 
     # Declare TestScripts module for the first time to simplify naming in test scripts.
