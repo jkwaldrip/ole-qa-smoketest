@@ -17,7 +17,6 @@ test/version_tmp
 tmp
 .idea/
 .project/
-config/options.yml
 logs/
-lib/config/*
+lib/config/options.yml
 lib/config/addl/*
