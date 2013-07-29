@@ -1,7 +1,6 @@
 # Default Kuali OLE Smoketest Configuration Options
 :browser: :firefox
-:base_url: http://tst.ole.kuali.org/
-:ls_url: http://tst.rice2.ole.kuali.org/
+:url: http://tst.ole.kuali.org/
 :explicit_wait: 10
 :implicit_wait: 0
 :doc_wait: 45
