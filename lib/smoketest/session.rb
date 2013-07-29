@@ -25,10 +25,12 @@ module OLE_QA::Smoketest
     attr_reader :caps
 
     # The target OLE installation's base URL.
-    attr_reader :base_url, :fs_url
-
-    # The target OLE installation's OLE Library Systems URL.
-    attr_reader :ls_url
+    attr_reader :url
+    # URL support for deprecated URL functions in Framework.
+    # See {OLE_QA::Framework::Session#url}
+    alias_method(:base_url, :url)
+    alias_method(:ls_url,   :url)
+    alias_method(:fs_url,   :url)
 
     # A unique name for the Smoketest session.
     # - Used for logfiles.
@@ -123,8 +125,7 @@ module OLE_QA::Smoketest
       if @opts[:logging?]
         @logfile = File.open('logs/' + @opts[:logfile], 'a')
         report("--START--")
-        report("Financial System URL:  #{@opts[:base_url]}")
-        report("Library System URL:    #{@opts[:ls_url]}")
+        report("Target URL:  #{@framework.url}")
         report(@name)
        end
     end
