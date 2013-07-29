@@ -123,7 +123,6 @@ module OLE_QA::Smoketest
 
       # Open logfile if logging enabled.
       if @opts[:logging?]
-        @logfile = File.open('logs/' + @opts[:logfile], 'a')
         report("--START--")
         report("Target URL:  #{@framework.url}")
         report(@name)
@@ -140,7 +139,9 @@ module OLE_QA::Smoketest
       end
       string = Time.new.strftime("%H:%M:%S ") + string if @opts[:timestamp?]
       if @opts[:logging?] then
-        @logfile.puts(string)
+        logfile = File.open('logs/' + @opts[:logfile], 'a')
+        logfile.puts(string)
+        logfile.close
       else
         puts(string) unless @opts[:quiet?]
       end
@@ -152,7 +153,6 @@ module OLE_QA::Smoketest
       @headless.destroy if @opts[:headless?] && !@opts[:sauce?]
       if @opts[:logging?]
         report("--END--")
-        @logfile.close
       end
     end
   end
