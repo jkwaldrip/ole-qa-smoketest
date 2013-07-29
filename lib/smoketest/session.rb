@@ -81,9 +81,7 @@ module OLE_QA::Smoketest
       @opts = default_opts.merge(opts)
 
       # Export options to instance variables.
-      @base_url = @opts[:base_url]
-      @fs_url = @base_url
-      @ls_url = @opts[:ls_url]
+      @url = @opts[:url]
       @explicit_wait = @opts[:explicit_wait]
       @implicit_wait = @opts[:implicit_wait]
       @name = @opts[:name] + " (v#{VERSION}) " + StartTime
