@@ -14,7 +14,7 @@ end
 
 desc "Select a config file from lib/config/addl."
 task :select_config do
-  puts 'Enter filename:  '
+  puts 'Enter filename:'
   target_file = STDIN.gets.chomp
   target_file += '.yml' unless target_file =~ /\.yml$/
   file_path = "#{loaddir}/lib/config/"
@@ -23,5 +23,36 @@ task :select_config do
     puts "Successfully copied #{file_path}addl/#{target_file}."
   else
     puts "File not found: #{file_path}addl/#{target_file}"
+  end
+end
+
+desc "Search a logfile for errors specific to test scripts."
+task :find_log_errors do
+  puts 'Enter name of logfile:'
+  target_file = STDIN.gets.chomp
+  target_file += '.log' unless target_file =~ /\.log$/
+  file_path = "#{loaddir}/logs/"
+  if File.exists?(file_path + target_file)
+    logfile = File.open(file_path + target_file)
+    logfile.each do |line|
+      if line =~ /#{loaddir}\/scripts\/.*\.rb/
+        puts "Line #{logfile.lineno} -- #{line}"
+      end
+    end
+  else
+    puts "File not found: #{file_path}#{target_file}"
+  end
+end
+
+desc "Search the most recent logfile for errors specific to test scripts."
+task :find_latest_errors do
+  target_file = Dir["#{loaddir}/logs/*.log"].sort[-1]
+  puts "Logfile: #{target_file}"
+  puts "(Custom filename found.  This may not be the latest logfile.)" unless target_file =~ /Smoketest-\d{4}-\d{2}-\d{2}-\d{4}\.log/
+  logfile = File.open(target_file)
+  logfile.each do |line|
+    if line =~ /#{loaddir}\/scripts\/.*\.rb/
+      puts "Line #{logfile.lineno} -- #{line}"
+    end
   end
 end
