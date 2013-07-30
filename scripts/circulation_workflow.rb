@@ -132,6 +132,8 @@ module OLE_QA::Smoketest::TestScripts
       report("End Circulation Session.")
       return_screen.end_session_button.click
       main_menu.open
+      logged_out = main_menu.logout
+      report("Logged out? #{logged_out}")
     end
   end
 end
