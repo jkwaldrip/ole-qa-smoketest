@@ -82,6 +82,9 @@ module OLE_QA::Smoketest
           @header = (OLE_QA::Smoketest.test_scripts.keys.sort.index(@test_name) + 1).to_s + '. '
       @header += @test_name
 
+      # Clear any dialog boxes which may remain from a previous test.
+      dismiss_dialog
+
       # Run the actual test steps.
       @results[:time] = Benchmark.realtime do
         begin
@@ -96,6 +99,7 @@ module OLE_QA::Smoketest
             report(e.message, 1)
             e.backtrace.each {|line| report line,2}
         ensure
+          dismiss_dialog
           report(@header.ljust(25) + '-- End.')
         end
       end
@@ -119,6 +123,11 @@ module OLE_QA::Smoketest
       min, sec = time_in_seconds.divmod(60)
       hrs, min = min.divmod(60)
       "#{format("%02d",hrs)}:#{format("%02d",min)}:#{format("%02d",sec.round)}"
+    end
+
+    # Dismiss an alert if one is present.
+    def dismiss_dialog
+      @ole.browser.alert.ok if @ole.browser.alert.present?
     end
   end
 end
