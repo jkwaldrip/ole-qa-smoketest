@@ -36,12 +36,7 @@ module OLE_QA::Smoketest::TestScripts
       report('Create instance (holdings) record.')
       instance_editor = OLE_QA::Framework::OLELS::Instance_Editor.new(@ole)
       bib_editor.add_instance_button.when_present.click
-      # Click the 'Holdings' Header - this will trigger a refresh and open a blank holdings
-      # record which cannot be submitted, but will load as a normal instance editor page.
-      bib_editor.holdings_link(1).when_present.click
-      instance_editor.wait_for_page_to_load
-      # Click the actual holdings link and wait for the editor to load once more.
-      bib_editor.holdings_link(1).when_present.click
+      bib_editor.holdings_link(2).when_present.click
       instance_editor.wait_for_page_to_load
       report("Location:  B-EDUC/BED-STACKS",1)
       instance_editor.location_field.set("B-EDUC/BED-STACKS")
