@@ -53,7 +53,7 @@ module OLE_QA
         @ole        = @session.framework
         @wait       = @session.opts[:explicit_wait]
         @url        = @session.opts[:url]
-        Dir["#{LibDir}/smoketest/overrides/*.rb"].sort.each {|file| require file}
+        Dir["#{LibDir}/overrides/*.rb"].sort.each {|file| require file}
         unless opts[:dry_run?]
           opts[:testscript] ? OLE_QA::Smoketest::Runner.run(opts[:testscript]) : OLE_QA::Smoketest::Runner.run
         end
