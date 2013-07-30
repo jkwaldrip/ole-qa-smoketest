@@ -36,7 +36,9 @@ task :find_log_errors do
     logfile = File.open(file_path + target_file)
     logfile.each do |line|
       if line =~ /#{loaddir}\/scripts\/.*\.rb/
-        puts "Line #{logfile.lineno} -- #{line}"
+        script_name = line.match(/(?<=scripts\/).*\.rb/)
+        script_line_num = line.match(/(?<=\.rb\:)\d+/)
+        puts "Logfile Line #{logfile.lineno} -- Error in #{script_name} at line #{script_line_num}"
       end
     end
   else
@@ -52,7 +54,9 @@ task :find_latest_errors do
   logfile = File.open(target_file)
   logfile.each do |line|
     if line =~ /#{loaddir}\/scripts\/.*\.rb/
-      puts "Line #{logfile.lineno} -- #{line}"
+      script_name = line.match(/(?<=scripts\/).*\.rb/)
+      script_line_num = line.match(/(?<=\.rb\:)\d+/)
+      puts "Logfile Line #{logfile.lineno} -- Error in #{script_name} at line #{script_line_num}"
     end
   end
 end
