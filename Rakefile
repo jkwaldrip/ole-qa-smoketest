@@ -12,6 +12,15 @@ task :clean_logs do
   puts "#{i} logfiles removed."
 end
 
+desc "Remove old screenshots."
+task :clean_screenshots do
+  i = 0
+  scrdir = Dir["screenshots/*.png"].sort
+  scrdir.each {|file| scrdir.delete(file) if file =~ /2013-08-05-1300.png/}
+  scrdir.each {|file| File.delete(file) ; i += 1}
+  puts "#{i} screenshots removed."
+end
+
 desc "Select a config file from lib/config/addl."
 task :select_config do
   puts 'Enter filename:'
