@@ -94,10 +94,13 @@ module OLE_QA::Smoketest
         rescue Watir::Wait::TimeoutError, Watir::Exception::UnknownObjectException,\
          Selenium::WebDriver::Error::StaleElementReferenceError, OLE_QA::Tools::Error,\
           Errno::ECONNREFUSED, StandardError => e
-          @results[:outcome] = false
+            @results[:outcome] = false
             report(e.class.name, 1)
             report(e.message, 1)
             e.backtrace.each {|line| report line,2}
+            screenshot_filename = "#{OLE_QA::Smoketest::StartTime}.png"
+            @ole.browser.screenshot.save("#{OLE_QA::Smoketest::LoadDir}screenshots/#{screenshot_filename}")
+            report("Saved screenshot: #{screenshot_filename}")
         ensure
           dismiss_dialog
           report(@header.ljust(25) + '-- End.')
