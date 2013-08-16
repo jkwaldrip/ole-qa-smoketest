@@ -70,6 +70,8 @@ module OLE_QA::Smoketest::TestScripts
       requisition.vendor_tab_toggle.click
 
       report("Add a minimum-requirements bib record.",1)
+      requisition.new_line_item.new_bib_option.set
+      Watir::Wait.until { requisition.new_line_item.new_bib_button.style.to_s =~ /inline/ }
       requisition.new_line_item.new_bib_button.click
       @ole.browser.windows[-1].use
       bib_editor = OLE_QA::Framework::OLELS::Bib_Editor.new(@ole)
