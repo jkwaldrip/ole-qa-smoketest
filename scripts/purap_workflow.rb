@@ -71,7 +71,7 @@ module OLE_QA::Smoketest::TestScripts
 
       report("Add a minimum-requirements bib record.",1)
       requisition.new_line_item.new_bib_option.set
-      Watir::Wait.until { requisition.new_line_item.new_bib_button.style.to_s =~ /inline/ }
+      requisition.new_line_item.new_bib_button.wait_until_present
       requisition.new_line_item.new_bib_button.click
       @ole.browser.windows[-1].use
       bib_editor = OLE_QA::Framework::OLELS::Bib_Editor.new(@ole)
@@ -102,11 +102,16 @@ module OLE_QA::Smoketest::TestScripts
 
       report("Close bib editor.",1)
       bib_editor.close_button.click
+      @ole.browser.windows[-1].close
       @ole.browser.windows[0].use
 
       report("Set requisition line item data.",1)
       report("List Price - 235.00",2)
-      requisition.new_line_item.list_price_field.set("235.00")
+      requisition.new_line_item.list_price_field.when_present.set("235.00")
+
+      report("Set location on line item.",1)
+      report("Location - B-EDUC/BED-STACKS",2)
+      requisition.new_line_item.location_selector.select("B-EDUC/BED-STACKS")
 
       report("Add line item.",1)
       requisition.new_line_item.add_button.click
@@ -114,7 +119,7 @@ module OLE_QA::Smoketest::TestScripts
       requisition.wait_for_page_to_load
 
       report("Verify list price.",1)
-      verify {requisition.line_item_1.list_price_field.value.include?("235.00")}
+      verify {requisition.line_item_1.list_price_field.when_present.value.include?("235.00")}
 
       report("Set line item 1 accounting line info.",1)
       requisition.line_item_1.accounting_lines_toggle.click
