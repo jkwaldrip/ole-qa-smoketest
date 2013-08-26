@@ -232,34 +232,35 @@ module OLE_QA::Smoketest::TestScripts
 
       # report("Receiving Doc #: #{receiving_doc.document_id.text.strip}")
 
-      report("Initiate payment request.")
-      invoice_number = Array.new(12){rand(36).to_s(36)}.join
-      payment_request_create = OLE_QA::Framework::OLEFS::PREQ_Creation.new(@ole)
-      payment_request_create.open
+      # FIXME - Update this to Invoice Workflow
+      # report("Initiate payment request.")
+      # invoice_number = Array.new(12){rand(36).to_s(36)}.join
+      # payment_request_create = OLE_QA::Framework::OLEFS::PREQ_Creation.new(@ole)
+      # payment_request_create.open
 
-      report("PO #: #{po_id}",1)
-      payment_request_create.purchase_order_number_field.set(po_id)
-      report("Invoice #: #{invoice_number}",1)
-      payment_request_create.invoice_number_field.set(invoice_number)
-      invoice_date = Time.new.strftime("%m/%d/%y")
-      report("Invoice Date: #{invoice_date}",1)
-      payment_request_create.invoice_date_field.set(invoice_date)
-      report("Invoice Amount: #{po_total}",1)
-      payment_request_create.invoice_amount_field.set(po_total)
-      report("Create payment request.")
-      payment_request_create.continue_button.click
+      # report("PO #: #{po_id}",1)
+      # payment_request_create.purchase_order_number_field.set(po_id)
+      # report("Invoice #: #{invoice_number}",1)
+      # payment_request_create.invoice_number_field.set(invoice_number)
+      # invoice_date = Time.new.strftime("%m/%d/%y")
+      # report("Invoice Date: #{invoice_date}",1)
+      # payment_request_create.invoice_date_field.set(invoice_date)
+      # report("Invoice Amount: #{po_total}",1)
+      # payment_request_create.invoice_amount_field.set(po_total)
+      # report("Create payment request.")
+      # payment_request_create.continue_button.click
 
-      payment_request = OLE_QA::Framework::OLEFS::Payment_Request.new(@ole)
-      payment_request.wait_for_page_to_load
-      report("Payment Method: Check",1)
-      payment_request.payment_method_selector.select("Check")
-      report("Calculate payment request.")
-      payment_request.calculate_button.click
+      # payment_request = OLE_QA::Framework::OLEFS::Payment_Request.new(@ole)
+      # payment_request.wait_for_page_to_load
+      # report("Payment Method: Check",1)
+      # payment_request.payment_method_selector.select("Check")
+      # report("Calculate payment request.")
+      # payment_request.calculate_button.click
 
-      payment_request.wait_for_page_to_load
-      payment_request.approve_button.click
+      # payment_request.wait_for_page_to_load
+      # payment_request.approve_button.click
 
-      report("Payment request approved.") unless payment_request.generic_message.present?
+      # report("Payment request approved.") unless payment_request.generic_message.present?
     end
   end
 end
