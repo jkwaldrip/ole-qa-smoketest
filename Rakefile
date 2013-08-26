@@ -3,6 +3,18 @@ $LOAD_PATH.unshift(loaddir) unless $LOAD_PATH.include?(loaddir)
 
 require 'fileutils'
 
+desc "Update Git repository."
+task :update do
+  msg_out = String.new
+  orig_branch = `git rev-parse --abbrev-ref HEAD`.strip
+  if orig_branch == 'master'
+    msg_out = `git pull`.strip
+  else
+    msg_out = `git checkout master && git pull && git checkout #{orig_branch}`
+  end
+  puts "#{msg_out}"
+end
+
 desc "Remove old logfiles."
 task :clean_logs do
   i = 0
