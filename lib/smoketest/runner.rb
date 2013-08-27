@@ -21,7 +21,7 @@ module OLE_QA
       # @raise OLE_QA::Smoketest::Error if the testscript is not found in {OLE_QA::Smoketest.test_scripts}
       def self.run(testscript = nil)
         if testscript
-          raise OLE_QA::Smoketest::Error,"Test not found.  (Given: #{testscript})" \
+          raise OLE_QA::Smoketest::Error,"Test not found.\n(Given: #{testscript})" \
             unless OLE_QA::Smoketest.test_scripts.include?(testscript)
           self.run_one(testscript)
         else
