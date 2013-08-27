@@ -50,8 +50,7 @@ module OLE_QA::Smoketest::TestScripts
       report('Create item record.')
       item_editor = OLE_QA::Framework::OLELS::Item_Editor.new(@ole)
       instance_editor.holdings_icon.when_present.click
-      instance_editor.item_link.wait_until_present
-      instance_editor.item_link.click
+      instance_editor.item_link.when_present.click
       item_editor.wait_for_page_to_load
       report("Call Number: #{call_number}",1)
       item_editor.call_number_field.set(call_number)
