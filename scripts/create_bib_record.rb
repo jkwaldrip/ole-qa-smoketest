@@ -48,7 +48,6 @@ module OLE_QA::Smoketest::TestScripts
 
       report('Create Instance (Holdings) Record.')
       instance_editor = OLE_QA::Framework::OLELS::Instance_Editor.new(@ole)
-      bib_editor.add_instance_button.when_present.click
       bib_editor.holdings_link(1).when_present.click
       instance_editor.wait_for_page_to_load
 
