@@ -35,7 +35,6 @@ module OLE_QA::Smoketest::TestScripts
 
       report('Create instance (holdings) record.')
       instance_editor = OLE_QA::Framework::OLELS::Instance_Editor.new(@ole)
-      bib_editor.add_instance_button.when_present.click
       bib_editor.holdings_link(1).when_present.click
       instance_editor.wait_for_page_to_load
       report("Location:  B-EDUC/BED-STACKS",1)
@@ -50,7 +49,7 @@ module OLE_QA::Smoketest::TestScripts
 
       report('Create item record.')
       item_editor = OLE_QA::Framework::OLELS::Item_Editor.new(@ole)
-      instance_editor.holdings_icon.click
+      instance_editor.holdings_icon.when_present.click
       instance_editor.item_link.wait_until_present
       instance_editor.item_link.click
       item_editor.wait_for_page_to_load
