@@ -101,7 +101,7 @@ module OLE_QA::Smoketest::TestScripts
       verify {bib_editor.message.text.include?("successful")}
 
       report("Close bib editor.",1)
-      bib_editor.close_button.click
+      # bib_editor.close_button.click
       @ole.browser.windows[-1].close
       @ole.browser.windows[0].use
 
