@@ -31,6 +31,7 @@ module OLE_QA::Smoketest::TestScripts
       bib_editor.control_008_field.when_present.set('DescribeWorkbenchTest')
       bib_editor.data_line_1.tag_field.when_present.set('245')
       bib_editor.data_line_1.data_field.set("|a#{title}")
+      bib_editor.data_line_1.add_button.click
       bib_editor.add_data_line(2)
       bib_editor.data_line_2.tag_field.when_present.set('100')
       bib_editor.data_line_2.data_field.when_present.set("|a#{author}")
@@ -70,6 +71,9 @@ module OLE_QA::Smoketest::TestScripts
       workbench.doc_type_bib.set
       workbench.search_field_1.when_present.set(rand_str)
       workbench.search_field_selector_1.when_present.select('Title')
+      workbench.search_button.when_present.click
+
+      
 
     end
   end
