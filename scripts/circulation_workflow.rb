@@ -18,39 +18,34 @@ module OLE_QA::Smoketest::TestScripts
     self.set_name("Loan/Return Test")
     def run
 
-
-      report('Open Bib Editor.')
+      report("Create bib record.")
       bib_editor = OLE_QA::Framework::OLELS::Bib_Editor.new(@ole)
       bib_editor.open
-
-      report('Create bibliographic record.')
-      report('Set Leader Field.',1)
-      bib_editor.set_button.when_present.click
-
-      report('Set Control 008 Field.',1)
-      bib_editor.control_008_field.when_present.set('CirculationSmokeTest')
-      report(bib_editor.control_008_field.value,2)
-
-      report('Set Marc 245 $a.',1)
-      bib_editor.data_line_1.tag_field.when_present.set('245')
-      bib_editor.data_line_1.data_field.when_present.set('|aCirculation Smoke Test')
-      report(bib_editor.data_line_1.data_field.value,2)
-
-      report('Set Marc 100 $a.',1)
+      bib_editor.set_button.click
+      bib_editor.control_008_field.when_present.set("CirculationSmokeTest")
+      bib_editor.data_line_1.tag_field.set("245")
+      bib_editor.data_line_1.data_field.set("|aCirculation Smoke Test")
       bib_editor.data_line_1.add_button.click
       bib_editor.add_data_line(2)
-      bib_editor.data_line_2.tag_field.when_present.set('100')
-      bib_editor.data_line_2.data_field.when_present.set('|aOLE QA Smoketest')
-      report(bib_editor.data_line_2.data_field.value,2)
+      bib_editor.data_line_2.tag_field.wait_until_present
+      bib_editor.data_line_2.tag_field.set("100")
+      bib_editor.data_line_2.data_field.set("|aOLE QA Smoketest")
+      bib_message = bib_editor.save_record
+      report(bib_message,1)
 
-      report('Save record.',1)
-      save_msg = bib_editor.save_record
-      report(save_msg,2)
-
-      report('Create Instance (Holdings) Record.')
+      report('Create instance (holdings) record.')
       instance_editor = OLE_QA::Framework::OLELS::Instance_Editor.new(@ole)
       bib_editor.holdings_link(1).when_present.click
       instance_editor.wait_for_page_to_load
+      report("Location:  B-EDUC/BED-STACKS",1)
+      instance_editor.location_field.set("B-EDUC/BED-STACKS")
+      call_number = OLE_QA::Tools::Data_Factory::Bib_Factory.call_number
+      report("Call Number: #{call_number}",1)
+      instance_editor.call_number_field.set(call_number)
+      call_number_type = instance_editor.call_number_type_selector.select_value("LCC")
+      report("Call Number Type: #{call_number_type}",1)
+      instance_message = instance_editor.save_record
+      report(instance_message,1)
 
       report('Set Location.',1)
       instance_editor.location_field.when_present.set('B-EDUC/BED-STACKS')
@@ -77,23 +72,19 @@ module OLE_QA::Smoketest::TestScripts
       end
       instance_editor.item_link.click
       item_editor.wait_for_page_to_load
-
-      report('Set Barcode',1)
+      report("Call Number: #{call_number}",1)
+      item_editor.call_number_field.set(call_number)
+      call_number_type = item_editor.call_number_type_selector.select_value("LCC")
+      report("Call Number Type: #{call_number_type}",1)
       item_barcode = OLE_QA::Tools::Data_Factory::Bib_Factory.barcode
-      item_editor.barcode_field.when_present.set(item_barcode)
-      report(item_editor.barcode_field.value,2)
-
-      report('Set Item Status.',1)
-      item_editor.item_status_selector.when_present.select('Available')
-      report(item_editor.item_status_selector.value,2)
-
-      report('Set Item Type.',1)
-      item_editor.item_type_selector.when_present.select('book')
-      report(item_editor.item_type_selector.value,2)
-
-      report('Save record.',1)
-      save_msg = item_editor.save_record
-      report(save_msg,2)
+      report("Barcode: #{item_barcode}",1)
+      item_editor.barcode_field.set(item_barcode)
+      report("Item Status: Available",1)
+      item_editor.item_status_selector.select("Available")
+      report("Item Type: book",1)
+      item_editor.item_type_selector.select("book")
+      item_message = item_editor.save_record
+      report(item_message,1)
 
       report('Return to OLELS Main Menu.')
       main_menu = OLE_QA::Framework::OLELS::Main_Menu.new(@ole)
