@@ -52,7 +52,10 @@ module OLE_QA::Smoketest::TestScripts
 
       report('Create target item record.')
       item_editor = OLE_QA::Framework::OLELS::Item_Editor.new(@ole)
-      instance_editor.holdings_icon.when_present.click
+      unless instance_editor.item_link.present?
+        instance_editor.holdings_icon.click
+        instance_editor.item_link.wait_until_present
+      end
       instance_editor.item_link.when_present.click
       item_editor.wait_for_page_to_load
       barcode = OLE_QA::Tools::Data_Factory::Bib_Factory.barcode
