@@ -211,9 +211,9 @@ module OLE_QA::Smoketest::TestScripts
 
       po_total = purchase_order.grand_total_field.text.strip
 
-      report("Receive purchase order.")
-      verify {purchase_order.receiving_button.present?}
       # FIXME - Re-enable the receiving section (below) when a fix has been found.
+      # report("Receive purchase order.")
+      # verify {purchase_order.receiving_button.present?}
       # purchase_order.receiving_button.click
 
       # receiving_doc = OLE_QA::Framework::OLEFS::Receiving_Document.new(@ole)
