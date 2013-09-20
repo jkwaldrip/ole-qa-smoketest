@@ -32,10 +32,10 @@ module OLE_QA::Smoketest
     #
     module MarcEditor
       # Create a Marc bibliographic record.
-      # @param [Object] editor_page The actual bib editor page object instantiated from the OLE_QA::Framework session.
+      # @param [Object] bib_editor The actual bib editor page object instantiated from the OLE_QA::Framework.
       # @param [Array] bib_ary  The array containing keyed hashes for Marc bib record lines.
       #
-      # - Example input:
+      # - Example Array:
       #   [ {:tag => '008',
       #      :value => 'ControlFieldRandomText'},
       #     {:tag => '245',
@@ -47,7 +47,7 @@ module OLE_QA::Smoketest
       #     :ind2 => '',
       #     :value => '|aOLE QA Smoketest'}
       #   ]
-      def create_bib(editor_page, bib_ary)
+      def create_bib(bib_editor, bib_ary)
         # Gather control field lines from array.
         control_lines = bib_ary.select { |marc_line| ('001'..'008').include?(marc_line[:tag]) }
         bib_ary.delete_if { |marc_line| ('001'..'008').include?(marc_line[:tag]) }
@@ -55,11 +55,11 @@ module OLE_QA::Smoketest
         # Wait for the actual bib editor to load.
         # - This may be superfluous, but better to lose at races than lose at Selenium.
         report('Wait for Bib Editor to load.',1)
-        editor_page.wait_for_page_to_load
+        bib_editor.wait_for_page_to_load
 
         # Click the 'Set Leader Field' button.
         report('Set leader field.',2)
-        editor_page.set_button.when_present.click
+        bib_editor.set_button.when_present.click
 
         # Set control fields individually.
         # - This could be made iterative, but the challenge introduced by 006 and 007 being repeatable
@@ -70,24 +70,24 @@ module OLE_QA::Smoketest
           report("Control #{line[:tag]} Field:  #{line[:value]}",2)
           case line[:tag]
           when '001'
-            editor_page.control_001_field.when_present.set(line[:value])
+            bib_editor.control_001_field.when_present.set(line[:value])
           when '003'
-            editor_page.control_003_field.when_present.set(line[:value])
+            bib_editor.control_003_field.when_present.set(line[:value])
           when '005'
-            editor_page.control_005_field.when_present.set(line[:value])
+            bib_editor.control_005_field.when_present.set(line[:value])
           when '006'
-            editor_page.control_006_line_1.field.when_present.set(line[:value])
+            bib_editor.control_006_line_1.field.when_present.set(line[:value])
           when '007'
-            editor_page.control_007_line_1.field.when_present.set(line[:value])
+            bib_editor.control_007_line_1.field.when_present.set(line[:value])
           when '008'
-            editor_page.control_008_field.when_present.set(line[:value])
+            bib_editor.control_008_field.when_present.set(line[:value])
           end
         end
 
         # Enter regular Marc data lines.
         bib_ary.each do |line|
           i = bib_ary.index(line) + 1
-          current_line = editor_page.send("data_line_#{i}".to_sym)
+          current_line = bib_editor.send("data_line_#{i}".to_sym)
           current_line.tag_field.when_present.set(line[:tag])
           current_line.ind1_field.when_present.set(line[:ind1]) unless line[:ind1].nil?
           current_line.ind2_field.when_present.set(line[:ind2]) unless line[:ind2].nil?
@@ -95,12 +95,49 @@ module OLE_QA::Smoketest
           report("Marc Data Line #{i}, Tag:  #{line[:tag]},  Value:  #{line[:value]}",2)
           unless i == bib_ary.count
             current_line.add_button.when_present.click
-            editor_page.add_data_line(i + 1)
+            bib_editor.add_data_line(i + 1)
           end
         end
         
-        message = editor_page.save_record
-        report(message)
+        report('Save bib record.',1)
+        message = bib_editor.save_record
+        report(message,2)
+      end
+
+      # Create a Marc instance/holdings record.
+      # @param [Object] instance_editor The actual instance editor page object instantiated from the OLE_QA::Framework.
+      # @param [Hash] instance_info  A keyed hash containing the information to enter into the instance record.
+      #
+      # - Example Hash:
+      #   {:location => 'B-EDUC/BED-STACKS',
+      #     :call_number => 'PJ1135 .A45 2010',
+      #     :call_number_type => 'LCC'
+      #     :instance_number => 1}
+      #
+      #   - :instance_number is the ordinal number of the instance record attached to the bib record, starting on 1.
+      # 
+      def create_instance(instance_editor, instance_info)
+        # Set instance number to 1 if not found.
+        instance_info[:instance_number] = 1 if instance_info[:instance_number].nil?
+
+        # Open instance record.
+        report('Open instance record.',1)
+        instance_editor.holdings_link(instance_info[:instance_number]).when_present.click
+        instance_editor.wait_for_page_to_load
+
+        report('Set location.',1)
+        instance_editor.location_field.when_present.set(instance_info[:location])
+        report("Location:  #{instance_info[:location]}",2)
+
+        report('Set Call Number.',1)
+        instance_editor.call_number_field.when_present.set(instance_info[:call_number])
+        report("Call Number: #{instance_info[:call_number]}",2)
+        instance_editor.call_number_type_selector.when_present.select_value(instance_info[:call_number_type])
+        report("Call Number Type:  #{instance_info[:call_number_type]}",2)
+
+        report('Save instance record.',1)
+        message = instance_editor.save_record
+        report(message,2)
       end
     end
   end
