@@ -32,34 +32,10 @@ module OLE_QA::Smoketest::TestScripts
 
       report('Create instance (holdings) record.')
       instance_editor = OLE_QA::Framework::OLELS::Instance_Editor.new(@ole)
-      bib_editor.holdings_link(1).when_present.click
-      instance_editor.wait_for_page_to_load
-      report("Location:  B-EDUC/BED-STACKS",1)
-      instance_editor.location_field.set("B-EDUC/BED-STACKS")
-      call_number = OLE_QA::Tools::Data_Factory::Bib_Factory.call_number
-      report("Call Number: #{call_number}",1)
-      instance_editor.call_number_field.set(call_number)
-      call_number_type = instance_editor.call_number_type_selector.select_value("LCC")
-      report("Call Number Type: #{call_number_type}",1)
-      instance_message = instance_editor.save_record
-      report(instance_message,1)
-
-      report('Set Location.',1)
-      instance_editor.location_field.when_present.set('B-EDUC/BED-STACKS')
-      report(instance_editor.location_field.value,2)
-
-      report('Set Call Number.',1)
-      call_num = OLE_QA::Tools::Data_Factory::Bib_Factory.call_number
-      instance_editor.call_number_field.when_present.set(call_num)
-      report(instance_editor.call_number_field.value,2)
-
-      report('Set Call Number Type.',1)
-      instance_editor.call_number_type_selector.when_present.select_value('LCC')
-      report(instance_editor.call_number_type_selector.value,2)
-
-      report('Save record.',1)
-      save_msg = instance_editor.save_record
-      report(save_msg,2)
+      instance_info = {:location => 'B-EDUC/BED-STACKS',
+        :call_number => OLE_QA::Tools::Data_Factory::Bib_Factory.call_number,
+        :call_number_type => 'LCC'}
+      create_instance(instance_editor, instance_info)
 
       report('Create Item Record.')
       item_editor = OLE_QA::Framework::OLELS::Item_Editor.new(@ole)
@@ -69,10 +45,6 @@ module OLE_QA::Smoketest::TestScripts
       end
       instance_editor.item_link.click
       item_editor.wait_for_page_to_load
-      report("Call Number: #{call_number}",1)
-      item_editor.call_number_field.set(call_number)
-      call_number_type = item_editor.call_number_type_selector.select_value("LCC")
-      report("Call Number Type: #{call_number_type}",1)
       item_barcode = OLE_QA::Tools::Data_Factory::Bib_Factory.barcode
       report("Barcode: #{item_barcode}",1)
       item_editor.barcode_field.set(item_barcode)
