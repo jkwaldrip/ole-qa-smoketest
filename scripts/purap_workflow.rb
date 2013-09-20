@@ -16,6 +16,7 @@ module OLE_QA::Smoketest::TestScripts
   # Test Select & Acquire PURAP Document Workflow from requisition to payment request.
   class PurapWorkflow < OLE_QA::Smoketest::Script
     self.set_name("PURAP Workflow Test")
+    include OLE_QA::Smoketest::MixIn::MarcEditor
     def run
       report("Open new requisition.",1)
       requisition = OLE_QA::Framework::OLEFS::Requisition.new(@ole)
@@ -76,22 +77,11 @@ module OLE_QA::Smoketest::TestScripts
       @ole.browser.windows[-1].use
       bib_editor = OLE_QA::Framework::OLELS::Bib_Editor.new(@ole)
 
-      report("Wait for bib editor to load.",2)
-      bib_editor.wait_for_page_to_load
+      bib_info = Array.new
+      bib_info << {:tag => '008', :value => 'PURAPTest'}
+      bib_info << {:tag => '245', :value => '|aTitle of Book'}
 
-      report("Enter control field 008.",2)
-      bib_editor.control_008_field.when_present.set("HELLOWORLD")
-
-      report("Set header info.",2)
-      bib_editor.set_button.click
-
-      report("Add line 245 \$a.",2)
-      bib_editor.data_line_1.tag_field.set("245")
-      bib_editor.data_line_1.data_field.set("|aTitle of Book")
-
-      report("Submit bib record.",1)
-      bib_editor.submit_button.click
-      bib_editor.message.wait_until_present
+      create_bib(bib_editor, bib_info)
 
       report("Check fields.",2)
       verify {bib_editor.data_line_1.tag_field.value.include?("245")}
@@ -101,7 +91,6 @@ module OLE_QA::Smoketest::TestScripts
       verify {bib_editor.message.text.include?("successful")}
 
       report("Close bib editor.",1)
-      # bib_editor.close_button.click
       @ole.browser.windows[-1].close
       @ole.browser.windows[0].use
 
