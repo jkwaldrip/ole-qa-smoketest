@@ -22,9 +22,9 @@ module OLE_QA::Smoketest
     #     self.set_name("Some Test")
     #     include OLE_QA::Smoketest::MarcEditor
     #     def run
-    #       create_bib(opts)
-    #       create_instance(opts)
-    #       create_item(opts)
+    #       create_bib(bib_editor, bib_info)
+    #       create_instance(instance_editor, instance_info)
+    #       create_item(item_editor, item_info)
     #     end
     #   end
     #
@@ -58,7 +58,7 @@ module OLE_QA::Smoketest
         editor_page.wait_for_page_to_load
 
         # Click the 'Set Leader Field' button.
-        report('Set leader field.',1)
+        report('Set leader field.',2)
         editor_page.set_button.when_present.click
 
         # Set control fields individually.
