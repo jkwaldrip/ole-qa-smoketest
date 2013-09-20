@@ -37,15 +37,10 @@ module OLE_QA::Smoketest::TestScripts
       
       report('Create target instance record.')
       instance_editor = OLE_QA::Framework::OLELS::Instance_Editor.new(@ole)
-      bib_editor.holdings_link(1).when_present.click
-      instance_editor.wait_for_page_to_load
-      instance_editor.location_field.set('B-EDUC/BED-STACKS')
-      call_number = OLE_QA::Tools::Data_Factory::Bib_Factory.call_number
-      instance_editor.call_number_field.set(call_number)
-      report("Call number: #{call_number}",1)
-      instance_editor.call_number_type_selector.select_value('LCC')
-      instance_msg = instance_editor.save_record
-      report(instance_msg,1)
+      instance_info = {:location => 'B-EDUC/BED-STACKS',
+        :call_number => OLE_QA::Tools::Data_Factory::Bib_Factory.call_number,
+        :call_number_type => 'LCC'}
+      create_instance(instance_editor, instance_info)
 
       report('Create target item record.')
       item_editor = OLE_QA::Framework::OLELS::Item_Editor.new(@ole)
