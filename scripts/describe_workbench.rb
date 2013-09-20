@@ -16,6 +16,7 @@ module OLE_QA::Smoketest::TestScripts
   # Test the search, view, and edit functions of the Describe Workbench.
   class DescribeWorkbench < OLE_QA::Smoketest::Script
     self.set_name("Describe Test")
+    include OLE_QA::Smoketest::MixIn::MarcEditor
     def run
       report("Create target bib record.")
       bib_editor = OLE_QA::Framework::OLELS::Bib_Editor.new(@ole)
@@ -26,18 +27,14 @@ module OLE_QA::Smoketest::TestScripts
       title  = 'Describe Workbench Test ' + rand_str
       author = 'OLE QA Smoketest '        + rand_str
       report("Random search target string:  #{rand_str}",1)
+      
+      bib_info = Array.new
+      bib_info << {:tag => '008', :value => 'DescribeWorkbenchTest'}
+      bib_info << {:tag => '245', :value => '|a' + title}
+      bib_info << {:tag => '100', :value => '|a' + author}
 
-      bib_editor.set_button.click
-      bib_editor.control_008_field.when_present.set('DescribeWorkbenchTest')
-      bib_editor.data_line_1.tag_field.when_present.set('245')
-      bib_editor.data_line_1.data_field.set("|a#{title}")
-      bib_editor.data_line_1.add_button.click
-      bib_editor.add_data_line(2)
-      bib_editor.data_line_2.tag_field.when_present.set('100')
-      bib_editor.data_line_2.data_field.when_present.set("|a#{author}")
-      bib_msg = bib_editor.save_record
-      report(bib_msg,1)
-
+      create_bib(bib_editor, bib_info)
+      
       report('Create target instance record.')
       instance_editor = OLE_QA::Framework::OLELS::Instance_Editor.new(@ole)
       bib_editor.holdings_link(1).when_present.click
