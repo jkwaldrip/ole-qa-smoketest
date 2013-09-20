@@ -16,22 +16,19 @@ module OLE_QA::Smoketest::TestScripts
   # Create an item record then checkout and return that item.
   class CirculationWorkflow < OLE_QA::Smoketest::Script
     self.set_name("Loan/Return Test")
+    include OLE_QA::Smoketest::MixIn::MarcEditor
     def run
 
       report("Create bib record.")
       bib_editor = OLE_QA::Framework::OLELS::Bib_Editor.new(@ole)
       bib_editor.open
-      bib_editor.set_button.click
-      bib_editor.control_008_field.when_present.set("CirculationSmokeTest")
-      bib_editor.data_line_1.tag_field.set("245")
-      bib_editor.data_line_1.data_field.set("|aCirculation Smoke Test")
-      bib_editor.data_line_1.add_button.click
-      bib_editor.add_data_line(2)
-      bib_editor.data_line_2.tag_field.wait_until_present
-      bib_editor.data_line_2.tag_field.set("100")
-      bib_editor.data_line_2.data_field.set("|aOLE QA Smoketest")
-      bib_message = bib_editor.save_record
-      report(bib_message,1)
+      
+      bib_info = Array.new
+      bib_info << {:tag => '008', :value => 'CirculationSmokeTest'}
+      bib_info << {:tag => '245', :value => '|aCirculation Smoke Test'}
+      bib_info << {:tag => '100', :value => '|aOLE QA Smoketest'}
+
+      create_bib(bib_editor, bib_info)
 
       report('Create instance (holdings) record.')
       instance_editor = OLE_QA::Framework::OLELS::Instance_Editor.new(@ole)
