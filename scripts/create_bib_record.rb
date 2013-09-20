@@ -16,6 +16,7 @@ module OLE_QA::Smoketest::TestScripts
   # Create a MARC bibliographic record with holdings and item in the editor.
   class BibEditor < OLE_QA::Smoketest::Script
     self.set_name("Bib Editor Test")
+    include OLE_QA::Smoketest::MixIn::MarcEditor
     def run
 
       report('Open Bib Editor.')
@@ -23,28 +24,11 @@ module OLE_QA::Smoketest::TestScripts
       bib_editor.open
 
       report('Create bibliographic record.')
-      report('Set Leader Field.',1)
-      bib_editor.set_button.when_present.click
-
-      report('Set Control 008 Field.',1)
-      bib_editor.control_008_field.when_present.set('BibEditorSmokeTest')
-      report(bib_editor.control_008_field.value,2)
-
-      report('Set Marc 245 $a.',1)
-      bib_editor.data_line_1.tag_field.when_present.set('245')
-      bib_editor.data_line_1.data_field.when_present.set('|aBib Editor Smoke Test')
-      report(bib_editor.data_line_1.data_field.value,2)
-
-      report('Set Marc 100 $a.',1)
-      bib_editor.data_line_1.add_button.click
-      bib_editor.add_data_line(2)
-      bib_editor.data_line_2.tag_field.when_present.set('100')
-      bib_editor.data_line_2.data_field.when_present.set('|aOLE QA Smoketest')
-      report(bib_editor.data_line_2.data_field.value,2)
-
-      report('Save record.',1)
-      save_msg = bib_editor.save_record
-      report(save_msg,2)
+      bib_info = Array.new
+      bib_info << {:tag => '008', :value => 'BibEditorSmokeTest'}
+      bib_info << {:tag => '245', :value => '|aBib Editor Smoke Test'}
+      bib_info << {:tag => '100', :value => '|aOLE QA Smoketest'}
+      create_bib(bib_editor, bib_info)
 
       report('Create Instance (Holdings) Record.')
       instance_editor = OLE_QA::Framework::OLELS::Instance_Editor.new(@ole)
