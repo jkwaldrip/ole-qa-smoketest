@@ -44,19 +44,10 @@ module OLE_QA::Smoketest::TestScripts
 
       report('Create target item record.')
       item_editor = OLE_QA::Framework::OLELS::Item_Editor.new(@ole)
-      unless instance_editor.item_link.present?
-        instance_editor.holdings_icon.click
-        instance_editor.item_link.wait_until_present
-      end
-      instance_editor.item_link.when_present.click
-      item_editor.wait_for_page_to_load
-      barcode = OLE_QA::Tools::Data_Factory::Bib_Factory.barcode
-      item_editor.barcode_field.set(barcode)
-      report("Barcode:  #{barcode}",1)
-      item_editor.item_status_selector.select('Available')
-      item_editor.item_type_selector.select('book')
-      item_msg = item_editor.save_record
-      report(item_msg,1)
+      item_info = {:item_type => 'book',
+        :item_status => 'Available',
+        :barcode => OLE_QA::Tools::Data_Factory::Bib_Factory.barcode}
+      create_item(item_editor, item_info)
 
       report('Open describe workbench.')
       workbench = OLE_QA::Framework::OLELS::Describe_Workbench.new(@ole)
