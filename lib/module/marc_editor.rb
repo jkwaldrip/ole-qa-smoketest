@@ -114,7 +114,7 @@ module OLE_QA::Smoketest
       #     :call_number_type => 'LCC'
       #     :instance_number => 1}
       #
-      #   - :instance_number is the ordinal number of the instance record attached to the bib record, starting on 1.
+      #   - :instance_number is the sequential number of the instance record attached to the bib record, starting on 1.
       # 
       def create_instance(instance_editor, instance_info)
         # Set instance number to 1 if not found.
@@ -131,12 +131,55 @@ module OLE_QA::Smoketest
 
         report('Set Call Number.',1)
         instance_editor.call_number_field.when_present.set(instance_info[:call_number])
-        report("Call Number: #{instance_info[:call_number]}",2)
+        report("Call Number:  #{instance_info[:call_number]}",2)
         instance_editor.call_number_type_selector.when_present.select_value(instance_info[:call_number_type])
         report("Call Number Type:  #{instance_info[:call_number_type]}",2)
 
         report('Save instance record.',1)
         message = instance_editor.save_record
+        report(message,2)
+      end
+
+      # Create a Marc item record.
+      # @param [Object] item_editor  The Actual item editor page object instantiated from the OLE_QA::Framework.
+      # @param [Hash] instance_info  A keyed hash containing the information to enter into the item record.
+      #
+      # - Example Hash:
+      #   {:item_type => 'book',
+      #     :item_status => 'Available',
+      #     :barcode => '6569660552130812946'}
+      #
+      #   - :instance_number is the sequential number of the instance record attached to the bib record, starting on 1.
+      #   - :item_number is the sequential number of the item record attached to the instance record, starting on 1.
+      #
+      def create_item(item_editor, item_info)
+        # Set instance & item numbers to 1 if not found.
+        item_info[:instance_number] = 1 if item_info[:instance_number].nil?
+        item_info[:item_number]     = 1 if item_info[:item_number].nil?
+
+        # Open item record.
+        unless item_editor.item_link(item_info[:item_number]).present?
+          item_editor.holdings_icon(item_info[:instance_number]).when_present.click
+          item_editor.item_link(item_info[:item_number]).wait_until_present
+        end
+        report('Open item record.',1)
+        item_editor.item_link(item_info[:item_number]).click
+        item_editor.wait_for_page_to_load
+
+        report('Set Item Type.',1)
+        item_editor.item_type_selector.when_present.select(item_info[:item_type])
+        report("Item Type:  #{item_info[:item_type]}",2)
+
+        report('Set Item Status.',1)
+        item_editor.item_status_selector.when_present.select(item_info[:item_status])
+        report("Item Status:  #{item_info[:item_status]}",2)
+
+        report('Set Barcode.',1)
+        item_editor.barcode_field.when_present.set(item_info[:barcode])
+        report("Barcode:  #{item_info[:barcode]}")
+
+        report('Save record.',1)
+        message = item_editor.save_record
         report(message,2)
       end
     end
