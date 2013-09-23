@@ -18,7 +18,7 @@ module OLE_QA::Smoketest::TestScripts
     self.set_name("Describe Test")
     include OLE_QA::Smoketest::MixIn::MarcEditor
     def run
-      report("Create target bib record.")
+      report('Create target bib record.')
       bib_editor = OLE_QA::Framework::OLELS::Bib_Editor.new(@ole)
       bib_editor.open
       
@@ -27,12 +27,12 @@ module OLE_QA::Smoketest::TestScripts
       title  = 'Describe Workbench Test ' + rand_str
       author = 'OLE QA Smoketest '        + rand_str
       report("Random search target string:  #{rand_str}",1)
-      
+
+      # Create bib record.
       bib_info = Array.new
       bib_info << {:tag => '008', :value => 'DescribeWorkbenchTest'}
       bib_info << {:tag => '245', :value => '|a' + title}
       bib_info << {:tag => '100', :value => '|a' + author}
-
       create_bib(bib_editor, bib_info)
       
       report('Create target instance record.')
@@ -54,12 +54,42 @@ module OLE_QA::Smoketest::TestScripts
       workbench.open
 
       report('Search for bib record by title.')
-      workbench.doc_type_bib.set
+      workbench.doc_type_bib.when_present.set
       workbench.search_field_1.when_present.set(rand_str)
       workbench.search_field_selector_1.when_present.select('Title')
       workbench.search_button.when_present.click
+      assert(120)   { workbench.result_present?(rand_str) }
+      report('Results confirmed.',1)
 
-      
+      report('Search for holdings record by call number.')
+      workbench.clear_button.when_present.click
+      workbench.doc_type_holdings.when_present.set
+      workbench.search_field_1.when_present.set(instance_info[:call_number])
+      workbench.search_field_selector_1.when_present.select('Call Number')
+      workbench.search_button.when_present.click
+      assert(120)   { workbench.result_present?(rand_str)}
+      assert(120)   { workbench.result_present?(instance_info[:call_number])}
+      report('Results confirmed.',1)
+
+      report('Search for item record by barcode.')
+      workbench.clear_button.when_present.click
+      workbench.doc_type_item.when_present.set
+      workbench.search_field_1.when_present.set(item_info[:barcode])
+      workbench.search_field_selector_1.when_present.select('Item Barcode')
+      workbench.search_button.when_present.click
+      assert(120)   { workbench.result_present?(rand_str)}
+      assert(120)   { workbench.result_present?(item_info[:barcode])}
+      report('Results confirmed.',1)
+
+      report('Search for bib record again.')
+      workbench.clear_button.when_present.click
+      workbench.doc_type_bib.when_present.set
+      workbench.search_field_1.when_present.set(rand_str)
+      workbench.search_field_selector_1.when_present.select('Title')
+      workbench.search_button.when_present.click
+      verify(120)   { workbench.result_present?(rand_str) }
+      report('Results confirmed.',1)
+
 
     end
   end
