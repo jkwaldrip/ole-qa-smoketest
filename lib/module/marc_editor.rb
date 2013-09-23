@@ -176,7 +176,7 @@ module OLE_QA::Smoketest
 
         report('Set Barcode.',1)
         item_editor.barcode_field.when_present.set(item_info[:barcode])
-        report("Barcode:  #{item_info[:barcode]}")
+        report("Barcode:  #{item_info[:barcode]}",2)
 
         report('Save record.',1)
         message = item_editor.save_record
