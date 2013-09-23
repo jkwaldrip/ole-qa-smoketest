@@ -39,21 +39,11 @@ module OLE_QA::Smoketest::TestScripts
 
       report('Create Item Record.')
       item_editor = OLE_QA::Framework::OLELS::Item_Editor.new(@ole)
-      unless instance_editor.item_link.present?
-        instance_editor.holdings_icon.click
-        instance_editor.item_link.wait_until_present
-      end
-      instance_editor.item_link.click
-      item_editor.wait_for_page_to_load
       item_barcode = OLE_QA::Tools::Data_Factory::Bib_Factory.barcode
-      report("Barcode: #{item_barcode}",1)
-      item_editor.barcode_field.set(item_barcode)
-      report("Item Status: Available",1)
-      item_editor.item_status_selector.select("Available")
-      report("Item Type: book",1)
-      item_editor.item_type_selector.select("book")
-      item_message = item_editor.save_record
-      report(item_message,1)
+      item_info = {:item_type => 'book',
+        :item_status => 'Available',
+        :barcode => item_barcode}
+      create_item(item_editor, item_info)
 
       report('Return to OLELS Main Menu.')
       main_menu = OLE_QA::Framework::OLELS::Main_Menu.new(@ole)
