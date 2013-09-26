@@ -25,7 +25,6 @@ module OLE_QA::Smoketest::TestScripts
 
       report('Create bibliographic record.')
       bib_info = Array.new
-      bib_info << {:tag => '008', :value => 'BibEditorSmokeTest'}
       bib_info << {:tag => '245', :value => '|aBib Editor Smoke Test'}
       bib_info << {:tag => '100', :value => '|aOLE QA Smoketest'}
       create_bib(bib_editor, bib_info)

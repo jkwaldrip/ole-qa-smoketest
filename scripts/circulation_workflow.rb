@@ -24,7 +24,6 @@ module OLE_QA::Smoketest::TestScripts
       bib_editor.open
       
       bib_info = Array.new
-      bib_info << {:tag => '008', :value => 'CirculationSmokeTest'}
       bib_info << {:tag => '245', :value => '|aCirculation Smoke Test'}
       bib_info << {:tag => '100', :value => '|aOLE QA Smoketest'}
 

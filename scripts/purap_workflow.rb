@@ -78,9 +78,7 @@ module OLE_QA::Smoketest::TestScripts
       bib_editor = OLE_QA::Framework::OLELS::Bib_Editor.new(@ole)
 
       bib_info = Array.new
-      bib_info << {:tag => '008', :value => 'PURAPTest'}
       bib_info << {:tag => '245', :value => '|aTitle of Book'}
-
       create_bib(bib_editor, bib_info)
 
       report("Check fields.",2)
