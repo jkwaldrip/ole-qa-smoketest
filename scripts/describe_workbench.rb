@@ -30,7 +30,6 @@ module OLE_QA::Smoketest::TestScripts
 
       # Create bib record.
       bib_info = Array.new
-      bib_info << {:tag => '008', :value => 'DescribeWorkbenchTest'}
       bib_info << {:tag => '245', :value => '|a' + title}
       bib_info << {:tag => '100', :value => '|a' + author}
       create_bib(bib_editor, bib_info)
@@ -52,8 +51,11 @@ module OLE_QA::Smoketest::TestScripts
       report('Open describe workbench.')
       workbench = OLE_QA::Framework::OLELS::Describe_Workbench.new(@ole)
       workbench.open
+      loading_box = @ole.browser.img(:alt => 'Loading...')
 
       report('Search for bib record by title.')
+      loading_box.wait_while_present if loading_box.present?
+      workbench.wait_for_page_to_load
       workbench.doc_type_bib.when_present.set
       workbench.search_field_1.when_present.set(rand_str)
       workbench.search_field_selector_1.when_present.select('Title')
@@ -63,9 +65,12 @@ module OLE_QA::Smoketest::TestScripts
 
       report('Search for holdings record by call number.')
       workbench.clear_button.when_present.click
+      loading_box.wait_while_present if loading_box.present?
+      workbench.wait_for_page_to_load
       workbench.doc_type_holdings.when_present.set
-      workbench.search_field_1.when_present.set(instance_info[:call_number])
-      workbench.search_field_selector_1.when_present.select('Call Number')
+      Watir::Wait.until { workbench.search_field_selector_1.present? && workbench.search_field_selector_1.include?('Call Number') }
+      workbench.search_field_1.set(instance_info[:call_number])
+      workbench.search_field_selector_1.select('Call Number')
       workbench.search_button.when_present.click
       assert(120)   { workbench.result_present?(rand_str)}
       assert(120)   { workbench.result_present?(instance_info[:call_number])}
@@ -73,9 +78,12 @@ module OLE_QA::Smoketest::TestScripts
 
       report('Search for item record by barcode.')
       workbench.clear_button.when_present.click
+      loading_box.wait_while_present if loading_box.present?
+      workbench.wait_for_page_to_load
       workbench.doc_type_item.when_present.set
-      workbench.search_field_1.when_present.set(item_info[:barcode])
-      workbench.search_field_selector_1.when_present.select('Item Barcode')
+      Watir::Wait.until { workbench.search_field_selector_1.present? && workbench.search_field_selector_1.include?('Item Barcode') }
+      workbench.search_field_1.set(item_info[:barcode])
+      workbench.search_field_selector_1.select('Item Barcode')
       workbench.search_button.when_present.click
       assert(120)   { workbench.result_present?(rand_str)}
       assert(120)   { workbench.result_present?(item_info[:barcode])}
@@ -83,14 +91,65 @@ module OLE_QA::Smoketest::TestScripts
 
       report('Search for bib record again.')
       workbench.clear_button.when_present.click
-      workbench.doc_type_bib.when_present.set
+      loading_box.wait_while_present if loading_box.present?
+      workbench.wait_for_page_to_load
+      workbench.doc_type_bib.set
+      workbench.wait_for_page_to_load
       workbench.search_field_1.when_present.set(rand_str)
       workbench.search_field_selector_1.when_present.select('Title')
       workbench.search_button.when_present.click
       verify(120)   { workbench.result_present?(rand_str) }
       report('Results confirmed.',1)
 
+      report('Open record via view link')
+      workbench.view_by_text(rand_str).when_present.click
+      Watir::Wait.until { @ole.windows.count > 1 }
+      @ole.windows[-1].use
+      bib_editor.wait_for_page_to_load
+      report('Verify bib record values.')
+      report('Verify title.',1)
+      assert      { bib_editor.readonly_data_field(1).when_present.text.include?(title) }
+      report('Verify author.',1)
+      assert      { bib_editor.readonly_data_field(2).when_present.text.include?(author) }
+      instance_editor.wait_for_page_to_load
+      report('Verify instance record values.')
+      report('Verify location.',1)
+      assert      { instance_editor.readonly_location.when_present.text.include?(instance_info[:location]) }
+      report('Verify call number.',1)
+      assert      { instance_editor.readonly_call_number.when_present.text.include?(instance_info[:call_number]) }
+      report('Verify item record values.')
+      instance_editor.item_link.click
+      item_editor.wait_for_page_to_load
+      report('Verify barcode.',1)
+      assert      { item_editor.readonly_barcode.when_present.text.include?(item_info[:barcode]) }
+      report('Verify item type.',1)
+      assert      { item_editor.readonly_item_type.when_present.text.include?(item_info[:item_type]) }
+      report('Verify item status.',1)
+      assert      { item_editor.readonly_item_status.when_present.text.include?(item_info[:item_status].upcase) }
 
+      report('Re-open record in edit mode and verify.')
+      @ole.windows[-1].close
+      @ole.windows[0].use
+      workbench.wait_for_page_to_load
+      loading_box.wait_while_present if loading_box.present?
+      workbench.edit_by_text(rand_str).when_present.click
+      @ole.windows[-1].use
+      bib_editor.wait_for_page_to_load
+      report('Verify record is editable.',1)
+      assert      { bib_editor.data_line_1.tag_field.enabled? }
+      assert      { bib_editor.data_line_1.data_field.enabled? }
+      assert      { bib_editor.data_line_2.tag_field.enabled? }
+      assert      { bib_editor.data_line_2.data_field.enabled? }
+      report('Verify record by title and author.',1)
+      report('Verify title.',2)
+      assert      { bib_editor.data_line_1.data_field.value.include?(title) }
+      report('Verify author.',2)
+      assert      { bib_editor.data_line_2.data_field.value.include?(author) }
+      @ole.windows[-1].close
+      @ole.windows[0].use
+
+      report('Return to main menu.')
+      @ole.open
     end
   end
 end
