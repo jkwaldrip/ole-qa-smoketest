@@ -104,6 +104,7 @@ module OLE_QA::Smoketest
             report("Saved screenshot: #{screenshot_filename}")
         ensure
           dismiss_dialog
+          logout
           report(@header.ljust(25) + '-- End.')
         end
       end
@@ -132,6 +133,12 @@ module OLE_QA::Smoketest
     # Dismiss an alert if one is present.
     def dismiss_dialog
       @ole.browser.alert.ok if @ole.browser.alert.present?
+    end
+
+    # Create a generic page object and use it to logout.
+    def logout
+      page = OLE_QA::Framework::Page.new(@ole, @ole.url)
+      page.logout
     end
   end
 end
