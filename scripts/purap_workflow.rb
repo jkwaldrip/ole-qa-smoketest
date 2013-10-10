@@ -219,35 +219,45 @@ module OLE_QA::Smoketest::TestScripts
 
       # report("Receiving Doc #: #{receiving_doc.document_id.text.strip}")
 
-      # FIXME - Update this to Invoice Workflow
-      # report("Initiate payment request.")
-      # invoice_number = Array.new(12){rand(36).to_s(36)}.join
-      # payment_request_create = OLE_QA::Framework::OLEFS::PREQ_Creation.new(@ole)
-      # payment_request_create.open
+      report('Create invoice.')
+      invoice = OLE_QA::Framework::OLEFS::Invoice.new(@ole)
+      invoice.open
+  
+      invoice.description_field.when_present.set(@test_name)
+      report("Description:  #{@test_name}",1)
+      invoice.vendor_selector.when_present.select('YBP Library Services')
+      report('Vendor:  YBP Library Services',1)
+      invoice_date = Chronic.parse('now').strftime("%m\/%d\/%Y")
+      invoice.invoice_date_field.when_present.set(invoice_date)
+      report("Invoice Date:  #{invoice_date}",1)
+      invoice.vendor_invoice_amt_field.when_present.set(po_total)
+      report("Invoice Amount:  #{po_total}",1)
+      invoice.payment_method_selector.when_present.select('Check')
+      report("Payment Method:  Check",1)
 
-      # report("PO #: #{po_id}",1)
-      # payment_request_create.purchase_order_number_field.set(po_id)
-      # report("Invoice #: #{invoice_number}",1)
-      # payment_request_create.invoice_number_field.set(invoice_number)
-      # invoice_date = Time.new.strftime("%m/%d/%y")
-      # report("Invoice Date: #{invoice_date}",1)
-      # payment_request_create.invoice_date_field.set(invoice_date)
-      # report("Invoice Amount: #{po_total}",1)
-      # payment_request_create.invoice_amount_field.set(po_total)
-      # report("Create payment request.")
-      # payment_request_create.continue_button.click
+      report('Add PO to Invoice.')
+      invoice.po_number_field.when_present.set(po_id)
+      report("PO Number Field:  #{po_id}",1)
+      invoice.po_add_button.when_present.click
+      invoice.wait_for_page_to_load
+      invoice.po_line.add_button.when_present.click
+      # FIXME Remove the next line when OLE-5192 is resolved.
+      invoice.current_items_line.line_number = 5
+      assert    {invoice.current_items_line.po_number.when_present.text == po_id}
+      report("PO added.",1)
 
-      # payment_request = OLE_QA::Framework::OLEFS::Payment_Request.new(@ole)
-      # payment_request.wait_for_page_to_load
-      # report("Payment Method: Check",1)
-      # payment_request.payment_method_selector.select("Check")
-      # report("Calculate payment request.")
-      # payment_request.calculate_button.click
+      report('Approve invoice.')
+      invoice_id = invoice.document_id.when_present.text
+      invoice.approve_button.when_present.click
+      assert    {invoice.message.when_present.text =~ /successful/ && invoice.message.when_present.text =~ /approved/}
+      report("Invoice:  #{invoice.message.text}",1)
+      report('Wait for invoice to reach department-approved status.',1)
+      invoice_url = @ole.url + OLE_QA::Tools::URLs.invoice(invoice_id)
+      assert_page(invoice_url)  { invoice.document_type_status.when_present.text == 'Department-Approved'}
+      report("Invoice Status:  #{invoice.document_type_status.text}")
+      report('Return to main menu.')
+      @ole.open
 
-      # payment_request.wait_for_page_to_load
-      # payment_request.approve_button.click
-
-      # report("Payment request approved.") unless payment_request.generic_message.present?
     end
   end
 end
