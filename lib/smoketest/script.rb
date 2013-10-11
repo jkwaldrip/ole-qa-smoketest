@@ -104,6 +104,8 @@ module OLE_QA::Smoketest
             report("Saved screenshot: #{screenshot_filename}")
         ensure
           dismiss_dialog
+          close_extra_windows
+          @ole.open
           logout
           report(@header.ljust(25) + '-- End.')
         end
@@ -138,7 +140,14 @@ module OLE_QA::Smoketest
     # Create a generic page object and use it to logout.
     def logout
       page = OLE_QA::Framework::Page.new(@ole, @ole.url)
-      page.logout
+      page.logout if page.login_confirmation.present?
+    end
+
+    def close_extra_windows
+      @ole.windows.each do |window|
+        window.close unless @ole.windows.index(window) == 0
+      end
+      @ole.windows[0].use
     end
   end
 end
