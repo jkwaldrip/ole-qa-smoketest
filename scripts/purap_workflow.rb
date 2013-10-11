@@ -241,8 +241,6 @@ module OLE_QA::Smoketest::TestScripts
       invoice.po_add_button.when_present.click
       invoice.wait_for_page_to_load
       invoice.po_line.add_button.when_present.click
-      # FIXME Remove the next line when OLE-5192 is resolved.
-      invoice.current_items_line.line_number = 5
       assert    {invoice.current_items_line.po_number.when_present.text == po_id}
       report("PO added.",1)
 
