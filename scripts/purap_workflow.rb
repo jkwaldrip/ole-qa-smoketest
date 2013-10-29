@@ -71,9 +71,9 @@ module OLE_QA::Smoketest::TestScripts
       requisition.vendor_tab_toggle.click
 
       report("Add a minimum-requirements bib record.",1)
-      requisition.new_line_item.new_bib_option.set
-      requisition.new_line_item.new_bib_button.wait_until_present
-      requisition.new_line_item.new_bib_button.click
+      requisition.new_bib_option.set
+      requisition.new_bib_button.wait_until_present
+      requisition.new_bib_button.click
       @ole.browser.windows[-1].use
       bib_editor = OLE_QA::Framework::OLELS::Bib_Editor.new(@ole)
 
@@ -82,8 +82,8 @@ module OLE_QA::Smoketest::TestScripts
       create_bib(bib_editor, bib_info)
 
       report("Check fields.",2)
-      verify {bib_editor.data_line_1.tag_field.value.include?("245")}
-      verify {bib_editor.data_line_1.data_field.value.include?("|aTitle of Book")}
+      verify {bib_editor.data_line.tag_field.value.include?("245")}
+      verify {bib_editor.data_line.data_field.value.include?("|aTitle of Book")}
 
       report("Check message.",2)
       verify {bib_editor.message.text.include?("successful")}
@@ -94,54 +94,52 @@ module OLE_QA::Smoketest::TestScripts
 
       report("Set requisition line item data.",1)
       report("List Price - 235.00",2)
-      requisition.new_line_item.list_price_field.when_present.set("235.00")
+      requisition.list_price_field.when_present.set("235.00")
 
       report("Set location on line item.",1)
       report("Location - B-EDUC/BED-STACKS",2)
-      requisition.new_line_item.location_selector.select("B-EDUC/BED-STACKS")
+      requisition.location_selector.select("B-EDUC/BED-STACKS")
 
       report("Add line item.",1)
-      requisition.new_line_item.add_button.click
-      requisition.add_line_item(1)
+      requisition.add_button.click
       requisition.wait_for_page_to_load
 
       report("Verify list price.",1)
-      verify {requisition.line_item_1.list_price_field.when_present.value.include?("235.00")}
+      verify {requisition.line_item.list_price_field.when_present.value.include?("235.00")}
 
       report("Set line item 1 accounting line info.",1)
-      requisition.line_item_1.accounting_lines_toggle.click
-      requisition.line_item_1.new_accounting_line.chart_selector.wait_until_present
+      requisition.line_item.accounting_lines_toggle.click
+      requisition.line_item.chart_selector.wait_until_present
 
       report("Chart - BL",2)
-      requisition.line_item_1.new_accounting_line.chart_selector.select("BL")
+      requisition.line_item.chart_selector.select("BL")
 
       report("Account Number - 2947494",2)
-      requisition.line_item_1.new_accounting_line.account_number_field.set("2947494")
+      requisition.line_item.account_number_field.set("2947494")
 
       report("Object Field - 7112",2)
-      requisition.line_item_1.new_accounting_line.object_field.set("7112")
+      requisition.line_item.object_field.set("7112")
 
       report("Percentage - 100.00",2)
-      requisition.line_item_1.new_accounting_line.percent_field.set("100")
+      requisition.line_item.percent_field.set("100")
 
       report("Add accounting line.",1)
-      requisition.line_item_1.new_accounting_line.add_button.click
-      requisition.line_item_1.add_accounting_line(1)
-      requisition.line_item_1.accounting_line_1.chart_selector.wait_until_present
+      requisition.line_item.add_account_button.click
+      requisition.line_item.accounting_line.chart_selector.wait_until_present
 
       report("Verify accounting line.",1)
 
       report("Chart",2)
-      verify {requisition.line_item_1.accounting_line_1.chart_selector.selected?("BL")}
+      verify {requisition.line_item.accounting_line.chart_selector.selected?("BL")}
 
       report("Account Number",2)
-      verify {requisition.line_item_1.accounting_line_1.account_number_field.value.include?("2947494")}
+      verify {requisition.line_item.accounting_line.account_number_field.value.include?("2947494")}
 
       report("Object",2)
-      verify {requisition.line_item_1.accounting_line_1.object_field.value.include?("7112")}
+      verify {requisition.line_item.accounting_line.object_field.value.include?("7112")}
 
       report("Percentage",2)
-      verify {requisition.line_item_1.accounting_line_1.percent_field.value.include?("100.00")}
+      verify {requisition.line_item.accounting_line.percent_field.value.include?("100.00")}
 
       report("Add a phone number to Additional Institutional Info.",1)
       requisition.additional_info_tab_toggle.click
@@ -208,9 +206,9 @@ module OLE_QA::Smoketest::TestScripts
       # receiving_doc.wait_for_page_to_load
 
       # report("Verify receiving line fields.",1)
-      # receiving_doc.receiving_line_1.description_field.wait_until_present
-      # verify {receiving_doc.receiving_line_1.item_received_quantity_field.text.include?("1")}
-      # verify {receiving_doc.receiving_line_1.item_received_parts_field.text.include?("1")}
+      # receiving_doc.receiving_line.description_field.wait_until_present
+      # verify {receiving_doc.receiving_line.item_received_quantity_field.text.include?("1")}
+      # verify {receiving_doc.receiving_line.item_received_parts_field.text.include?("1")}
 
       # report("Submit receiving document.")
       # receiving_doc.submit_button.click
