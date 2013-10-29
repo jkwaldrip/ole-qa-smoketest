@@ -87,7 +87,8 @@ module OLE_QA::Smoketest
         # Enter regular Marc data lines.
         bib_ary.each do |line|
           i = bib_ary.index(line) + 1
-          current_line = bib_editor.send("data_line_#{i}".to_sym)
+          current_line = bib_editor.data_line
+          current_line.line_number = i
           current_line.tag_field.when_present.set(line[:tag])
           current_line.ind1_field.when_present.set(line[:ind1]) unless line[:ind1].nil?
           current_line.ind2_field.when_present.set(line[:ind2]) unless line[:ind2].nil?
@@ -95,7 +96,6 @@ module OLE_QA::Smoketest
           report("Marc Data Line #{i}, Tag:  #{line[:tag]},  Value:  #{line[:value]}",2)
           unless i == bib_ary.count
             current_line.add_button.when_present.click
-            bib_editor.add_data_line(i + 1)
           end
         end
         
