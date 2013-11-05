@@ -139,15 +139,18 @@ module OLE_QA::Smoketest::TestScripts
       @ole.windows[-1].use
       bib_editor.wait_for_page_to_load
       report('Verify record is editable.',1)
-      assert      { bib_editor.data_line_1.tag_field.enabled? }
-      assert      { bib_editor.data_line_1.data_field.enabled? }
-      assert      { bib_editor.data_line_2.tag_field.enabled? }
-      assert      { bib_editor.data_line_2.data_field.enabled? }
+      assert      { bib_editor.data_line.tag_field.enabled? }
+      assert      { bib_editor.data_line.data_field.enabled? }
+      bib_editor.data_line.line_number = 2
+      assert      { bib_editor.data_line.tag_field.enabled? }
+      assert      { bib_editor.data_line.data_field.enabled? }
       report('Verify record by title and author.',1)
       report('Verify title.',2)
-      assert      { bib_editor.data_line_1.data_field.value.include?(rand_str) }
+      bib_editor.data_line.line_number = 1
+      assert      { bib_editor.data_line.data_field.value.include?(rand_str) }
       report('Verify author.',2)
-      assert      { bib_editor.data_line_2.data_field.value.include?(rand_str) }
+      bib_editor.data_line.line_number = 2
+      assert      { bib_editor.data_line.data_field.value.include?(rand_str) }
       @ole.windows[-1].close
       @ole.windows[0].use
 
