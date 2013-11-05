@@ -234,19 +234,17 @@ module OLE_QA::Smoketest::TestScripts
       report("Payment Method:  Check",1)
 
       report('Add PO to Invoice.')
-      invoice.po_number_field.when_present.set(po_id)
+      invoice.po_number_field.when_present.set(po_id + "\n")
       report("PO Number Field:  #{po_id}",1)
-      invoice.po_add_button.when_present.click
       invoice.wait_for_page_to_load
       invoice.po_line.add_button.when_present.click
+      invoice.current_items_line.line_number = 5
       assert    {invoice.current_items_line.po_number.when_present.text == po_id}
       report("PO added.",1)
 
       report('Approve invoice.')
       invoice_id = invoice.document_id.when_present.text
       invoice.approve_button.when_present.click
-      assert    {invoice.message.when_present.text =~ /successful/ && invoice.message.when_present.text =~ /approved/}
-      report("Invoice:  #{invoice.message.text}",1)
       report('Wait for invoice to reach department-approved status.',1)
       invoice_url = @ole.url + OLE_QA::Tools::URLs.invoice(invoice_id)
       assert_page(invoice_url)  { invoice.document_type_status.when_present.text == 'Department-Approved'}
