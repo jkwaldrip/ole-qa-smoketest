@@ -93,7 +93,7 @@ module OLE_QA::Smoketest
           @results[:outcome] = true
         rescue Watir::Wait::TimeoutError, Watir::Exception::UnknownObjectException,\
          Selenium::WebDriver::Error::StaleElementReferenceError, OLE_QA::Tools::Error,\
-          Errno::ECONNREFUSED, StandardError => e
+          Errno::ECONNREFUSED, Selenium::WebDriver::Error::UnhandledAlertError, StandardError => e
             @results[:outcome] = false
             report(e.class.name, 1)
             report(e.message, 1)
