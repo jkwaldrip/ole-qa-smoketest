@@ -39,7 +39,7 @@ module OLE_QA::Smoketest::TestScripts
       report('Create Item Record.')
       item_editor = OLE_QA::Framework::OLELS::Item_Editor.new(@ole)
       item_barcode = OLE_QA::Tools::Data_Factory::Bib_Factory.barcode
-      item_info = {:item_type => 'book',
+      item_info = {:item_type => 'Book',
         :item_status => 'Available',
         :barcode => item_barcode}
       create_item(item_editor, item_info)
