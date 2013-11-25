@@ -91,9 +91,7 @@ module OLE_QA::Smoketest
           report(@header.ljust(25) + '-- Begin.')
           self.run if defined?(run)
           @results[:outcome] = true
-        rescue Watir::Wait::TimeoutError, Watir::Exception::UnknownObjectException,\
-         Selenium::WebDriver::Error::StaleElementReferenceError, OLE_QA::Tools::Error,\
-          Errno::ECONNREFUSED, Selenium::WebDriver::Error::UnhandledAlertError, StandardError => e
+        rescue => e
             @results[:outcome] = false
             report(e.class.name, 1)
             report(e.message, 1)
