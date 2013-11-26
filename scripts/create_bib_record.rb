@@ -32,7 +32,7 @@ module OLE_QA::Smoketest::TestScripts
       report('Create Instance (Holdings) Record.')
       instance_editor = OLE_QA::Framework::OLELS::Instance_Editor.new(@ole)     
       instance_info = {:location => 'B-EDUC/BED-STACKS',
-        :call_number => OLE_QA::Tools::Data_Factory::Bib_Factory.call_number,
+        :call_number => OLE_QA::Framework::Bib_Factory.call_number,
         :call_number_type => 'LCC'}
       create_instance(instance_editor, instance_info)
       
@@ -40,7 +40,7 @@ module OLE_QA::Smoketest::TestScripts
       item_editor = OLE_QA::Framework::OLELS::Item_Editor.new(@ole)
       item_info = {:item_type => 'Book',
         :item_status => 'Available',
-        :barcode => OLE_QA::Tools::Data_Factory::Bib_Factory.barcode}
+        :barcode => OLE_QA::Framework::Bib_Factory.barcode}
       create_item(item_editor, item_info)
 
       report('Return to main menu.')

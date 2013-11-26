@@ -12,6 +12,9 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License
 
+dir = File.expand_path(File.dirname(__FILE__))
+$LOAD_PATH.unshift(dir) unless $LOAD_PATH.include?(dir)
+
 require "headless"
 require "watir-webdriver"
 require "chronic"
@@ -20,7 +23,6 @@ require "pp"
 require "benchmark"
 require "yaml"
 
-require "ole-qa-tools"
 require "ole-qa-framework"
 
 

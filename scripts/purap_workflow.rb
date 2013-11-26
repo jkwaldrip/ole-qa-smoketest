@@ -158,7 +158,7 @@ module OLE_QA::Smoketest::TestScripts
 
       report("Set requisition URL.",1)
       req_doc_id = requisition.document_id.text.strip
-      req_url = @ole.fs_url + OLE_QA::Tools::URLs.requisition(req_doc_id)
+      req_url = requisition.lookup_url(req_doc_id)
 
       report("Requisition Doc #: #{req_doc_id}")
 
@@ -243,10 +243,10 @@ module OLE_QA::Smoketest::TestScripts
       report("PO added.",1)
 
       report('Approve invoice.')
-      invoice_id = invoice.document_id.when_present.text
+      invoice_doc_id = invoice.document_id.when_present.text
       invoice.approve_button.when_present.click
       report('Wait for invoice to reach department-approved status.',1)
-      invoice_url = @ole.url + OLE_QA::Tools::URLs.invoice(invoice_id)
+      invoice_url = invoice.lookup_url(invoice_doc_id)
       assert_page(invoice_url)  { invoice.document_type_status.when_present.text == 'Department-Approved'}
       report("Invoice Status:  #{invoice.document_type_status.text}")
       report('Return to main menu.')

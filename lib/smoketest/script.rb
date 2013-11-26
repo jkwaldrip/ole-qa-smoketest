@@ -37,7 +37,7 @@ module OLE_QA::Smoketest
   #
   class Script
 
-    include OLE_QA::Tools::Asserts
+    include OLE_QA::Smoketest::Asserts
 
     # A hash containing the results of the test script's execution.
     attr_reader :results
@@ -98,7 +98,7 @@ module OLE_QA::Smoketest
             e.backtrace.each {|line| report line,2}
             time_now = Chronic.parse('now')
             screenshot_filename = "Failure-#{time_now.strftime("%Y-%m-%d-%H%M%S")}.png"
-            @ole.browser.screenshot.save("#{OLE_QA::Smoketest::LoadDir}screenshots/#{screenshot_filename}")
+            @ole.browser.screenshot.save("#{OLE_QA::Smoketest::LoadDir}/screenshots/#{screenshot_filename}")
             report("Saved screenshot: #{screenshot_filename}")
         ensure
           dismiss_dialog

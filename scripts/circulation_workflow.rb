@@ -32,13 +32,13 @@ module OLE_QA::Smoketest::TestScripts
       report('Create instance (holdings) record.')
       instance_editor = OLE_QA::Framework::OLELS::Instance_Editor.new(@ole)
       instance_info = {:location => 'B-EDUC/BED-STACKS',
-        :call_number => OLE_QA::Tools::Data_Factory::Bib_Factory.call_number,
+        :call_number => OLE_QA::Framework::Bib_Factory.call_number,
         :call_number_type => 'LCC'}
       create_instance(instance_editor, instance_info)
 
       report('Create Item Record.')
       item_editor = OLE_QA::Framework::OLELS::Item_Editor.new(@ole)
-      item_barcode = OLE_QA::Tools::Data_Factory::Bib_Factory.barcode
+      item_barcode = OLE_QA::Framework::Bib_Factory.barcode
       item_info = {:item_type => 'Book',
         :item_status => 'Available',
         :barcode => item_barcode}

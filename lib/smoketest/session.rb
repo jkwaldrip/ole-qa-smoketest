@@ -16,8 +16,6 @@ module OLE_QA::Smoketest
   # The main Smoketest Session Handling class.
   class Session
 
-    include OLE_QA::Tools::Asserts
-
     # The options with which the OLE Smoketest session was invoked.
     attr_reader :opts
 

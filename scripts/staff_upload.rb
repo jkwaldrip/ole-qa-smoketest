@@ -69,11 +69,11 @@ module OLE_QA::Smoketest::TestScripts
       report("Load Report ID:  #{load_report_id}",1)
 
       report('Open load report.')
-      load_report_url = @ole.base_url + OLE_QA::Tools::URLs.load_report(load_report_id)
       load_report = OLE_QA::Framework::OLEFS::Load_Report.new(@ole)
+      load_report.lookup(load_report_id)
       i = 1
       page_assert('',90) {
-        @ole.open(load_report_url)
+        load_report.lookup(load_report_id)
         load_report.wait_for_page_to_load
         i += 1
         load_report.counts.text.match(/TOTAL\:\s+\d+.*\sSUCCESS\:\s+\d+.*FAILED\:\s+\d+/)
