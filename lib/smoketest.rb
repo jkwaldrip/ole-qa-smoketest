@@ -33,9 +33,9 @@ module OLE_QA
     # Path to lib/..
     LoadDir = LibDir + "/../"
 
+    Dir["#{LibDir}/module/*.rb"].sort.each {|file| require file}
     Dir["#{LibDir}/smoketest/*.rb"].sort.each {|file| require file}
     Dir["#{LibDir}/smoketest/*/*.rb"].sort.each {|file| require file}
-    Dir["#{LibDir}/module/*.rb"].sort.each {|file| require file}
 
     # Create index of all test scripts.
     # e.g. {['Name of Test'] => TestClass}
