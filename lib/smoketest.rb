@@ -31,7 +31,9 @@ module OLE_QA
     # Path to lib/
     LibDir = File.dirname(__FILE__)
     # Path to lib/..
-    LoadDir = LibDir + "/../"
+    LoadDir = File.expand_path(LibDir + "/../")
+    # Path to data/
+    DataDir = File.expand_path(LibDir + "/../data/")
 
     Dir["#{LibDir}/module/*.rb"].sort.each {|file| require file}
     Dir["#{LibDir}/smoketest/*.rb"].sort.each {|file| require file}

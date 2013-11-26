@@ -19,10 +19,10 @@ module OLE_QA::Smoketest::TestScripts
 
     def run
       report('Fetch EOCR data.')
-      data_factory = OLE_QA::Tools::Data_Factory::EOCR_Factory.new
-      eocr = data_factory.select_file
+      eocr_factory = OLE_QA::Smoketest::EOCR.new
+      eocr = eocr_factory.select_files
       report("Bare Filename:  #{eocr[0]}",1)
-      report("File Load Path: #{data_factory.file_path}",1)
+      report("File Load Path: #{eocr_factory.file_path}",1)
       now_ish = Chronic.parse('now').strftime('%Y/%m/%d %H:%k %Z')
       upload_desc = "Smoketest #{now_ish} -- " + eocr[0]
 
