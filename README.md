@@ -3,8 +3,7 @@
 This gem is an automated smoketest application for the [Kuali Open Library Environment](http://www.kuali.org/ole).
 It contains a command-line interface (ole-qa-smoketest/ole-smoketest.rb), and relies on the
 [OLE QA Framework](http://www.github.com/jkwaldrip/ole-qa-framework) to supply element definitions in a page-object
-model.  The [OLE QA Tools](http://www.github.com/jkwaldrip/ole-qa-tools) gem provides additional testing functionality
-such as spin asserts and OLE-specific data (e.g., pre-selected accounting strings from the KFS IU sample data).
+model.
 
 ## Command-Line Usage
 
@@ -100,31 +99,8 @@ The [OLE QA Framework](http://www.github.com/jkwaldrip/ole-qa-framework) gem pro
 common elements in the Kuali OLE application.  The actual test scripts executed by the Runner object when this application is
 invoked are written in the Watir-Webdriver based language provided by the OLE QA Framework.
 
-The OLE QA Framework is accessible through the same top-level namespace module (OLE\_QA) as the Smoketest Application and the
-QA Tools library.  This provides more seemless integration between these three related gems.
-
-### OLE QA Tools
-
-The [OLE QA Tools](http://www.github.com/jkwaldrip/ole-qa-tools) gem provides a library of commonly-used functions intended to
-be called in the execution of these smoketests.  Some of these are available as mix-in modules, and others are grouped into
-classes.
-
-Below is a short, non-comprehensive example of some of the functions called from the OLE QA Tools library in a given test script:
-
-- Asserts
-    - Mixin Module
-        - OLE\_QA::Tools::Asserts
-    - assert(timeout\_in\_seconds) { statement\_to\_be\_evaluated }
-        - Repeatedly tests if the given condition evaluates as true.  If the timeout is reached, an error is raised and the test fails.
-    - verify(timeout\_in\_seconds) { statement\_to\_be\_evaluated }
-        - Repeatedly tests if the given condition evaluates as true.  If the timeout is reached, an answer of 'false' is returned.
-- Accounting Data Factory
-    - Independent Class
-        - OLE\_QA::Tools::Data\_Factory::Accounting\_Factory
-    - .select\_account(chart\_code)
-        - Returns a useable, active account number for the given chart code.
-    - .select\_account!(chart\_code)
-        - Returns a useable, active account number for the given chart code and prevents it from being reused within the same session.
+The OLE QA Framework is accessible through the same top-level namespace module (OLE\_QA) as the Smoketest Application to
+provide more seamless integration between these three related gems.
 
 ----
 &copy; 2005-2013, The Kuali Foundation.
