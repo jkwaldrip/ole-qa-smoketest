@@ -194,61 +194,6 @@ module OLE_QA::Smoketest::TestScripts
       po_doc_id = purchase_order.document_id.text.strip
       report("PO Doc #: #{po_doc_id}")
 
-      po_total = purchase_order.grand_total_field.text.strip
-
-      # FIXME - Re-enable the receiving section (below) when a fix has been found.
-      # report("Receive purchase order.")
-      # verify {purchase_order.receiving_button.present?}
-      # purchase_order.receiving_button.click
-
-      # receiving_doc = OLE_QA::Framework::OLEFS::Receiving_Document.new(@ole)
-      # receiving_doc.create_receiving_line(1)
-      # receiving_doc.wait_for_page_to_load
-
-      # report("Verify receiving line fields.",1)
-      # receiving_doc.receiving_line.description_field.wait_until_present
-      # verify {receiving_doc.receiving_line.item_received_quantity_field.text.include?("1")}
-      # verify {receiving_doc.receiving_line.item_received_parts_field.text.include?("1")}
-
-      # report("Submit receiving document.")
-      # receiving_doc.submit_button.click
-      # receiving_doc.wait_for_page_to_load
-      # assert {receiving_doc.submit_message.present?}
-
-      # report("Receiving Doc #: #{receiving_doc.document_id.text.strip}")
-
-      report('Create invoice.')
-      invoice = OLE_QA::Framework::OLEFS::Invoice.new(@ole)
-      invoice.open
-  
-      invoice.description_field.when_present.set(@test_name)
-      report("Description:  #{@test_name}",1)
-      invoice.vendor_selector.when_present.select('YBP Library Services')
-      report('Vendor:  YBP Library Services',1)
-      invoice_date = Chronic.parse('now').strftime("%m\/%d\/%Y")
-      invoice.invoice_date_field.when_present.set(invoice_date)
-      report("Invoice Date:  #{invoice_date}",1)
-      invoice.vendor_invoice_amt_field.when_present.set(po_total)
-      report("Invoice Amount:  #{po_total}",1)
-      invoice.payment_method_selector.when_present.select('Check')
-      report("Payment Method:  Check",1)
-
-      report('Add PO to Invoice.')
-      invoice.po_number_field.when_present.set(po_id + "\n")
-      report("PO Number Field:  #{po_id}",1)
-      invoice.wait_for_page_to_load
-      invoice.po_line.add_button.when_present.click
-      invoice.current_items_line.line_number = 5
-      assert    {invoice.current_items_line.po_number.when_present.text == po_id}
-      report("PO added.",1)
-
-      report('Approve invoice.')
-      invoice_doc_id = invoice.document_id.when_present.text
-      invoice.approve_button.when_present.click
-      report('Wait for invoice to reach department-approved status.',1)
-      invoice_url = invoice.lookup_url(invoice_doc_id)
-      assert_page(invoice_url)  { invoice.document_type_status.when_present.text == 'Department-Approved'}
-      report("Invoice Status:  #{invoice.document_type_status.text}")
       report('Return to main menu.')
       @ole.open
 
