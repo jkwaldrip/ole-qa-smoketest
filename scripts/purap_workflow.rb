@@ -22,13 +22,13 @@ module OLE_QA::Smoketest::TestScripts
       requisition = OLE_QA::Framework::OLEFS::Requisition.new(@ole)
       requisition.open
 
-      report("Set description to #{@test_name}.",1)
-      requisition.description_field.set(@test_name)
-
+      report("Set description.",1)
+      requisition.document_overview_tab_toggle.click unless requisition.description_field.present?
+      requisition.description_field.set('Smoketest')
+  
       report("Set delivery building & room number.",1)
-      requisition.delivery_tab_toggle.click
-      requisition.building_search_icon.wait_until_present
-      requisition.building_search_icon.click
+      requisition.delivery_tab_toggle.click unless requisition.building_search_icon.present?
+      requisition.building_search_icon.when_present.click
 
       report("Building search.",2)
       building_lookup = OLE_QA::Framework::OLEFS::Building_Lookup.new(@ole)
@@ -50,9 +50,8 @@ module OLE_QA::Smoketest::TestScripts
       requisition.delivery_tab_toggle.click
 
       report("Select YBP as vendor",1)
-      requisition.vendor_tab_toggle.click
-      requisition.vendor_search_icon.wait_until_present
-      requisition.vendor_search_icon.click
+      requisition.vendor_tab_toggle.click unless requisition.vendor_search_icon.present?
+      requisition.vendor_search_icon.when_present.click
 
       report("Vendor search.",2)
       vendor_lookup = OLE_QA::Framework::OLEFS::Vendor_Lookup.new(@ole)
