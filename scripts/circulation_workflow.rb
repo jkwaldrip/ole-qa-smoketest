@@ -13,38 +13,11 @@
 #  limitations under the License.
 
 module OLE_QA::Smoketest::TestScripts
-  # Create an item record then checkout and return that item.
+  # Verify loan and return screens are loading properly and associated with desk & patron data.
   class CirculationWorkflow < OLE_QA::Smoketest::Script
     self.set_name("Loan/Return Test")
     include OLE_QA::Smoketest::MixIn::MarcEditor
     def run
-
-      report("Create bib record.")
-      bib_editor = OLE_QA::Framework::OLELS::Bib_Editor.new(@ole)
-      bib_editor.open
-      
-      bib_info = Array.new
-      bib_info << {:tag => '245', :value => '|aCirculation Smoke Test'}
-      bib_info << {:tag => '100', :value => '|aOLE QA Smoketest'}
-
-      create_bib(bib_editor, bib_info)
-
-      report('Create instance (holdings) record.')
-      instance_editor = OLE_QA::Framework::OLELS::Instance_Editor.new(@ole)
-      instance_info = {:location => 'B-EDUC/BED-STACKS',
-        :call_number => OLE_QA::Framework::Bib_Factory.call_number,
-        :call_number_type => 'LCC'}
-      create_instance(instance_editor, instance_info)
-
-      report('Create Item Record.')
-      item_editor = OLE_QA::Framework::OLELS::Item_Editor.new(@ole)
-      item_barcode = OLE_QA::Framework::Bib_Factory.barcode
-      item_info = {:item_type => 'Book',
-        :item_status => 'Available',
-        :barcode => item_barcode}
-      create_item(item_editor, item_info)
-
-      report('Return to OLELS Main Menu.')
       main_menu = OLE_QA::Framework::OLELS::Main_Menu.new(@ole)
       main_menu.open
       report("Login as user \'dev2\'.",1)
@@ -59,51 +32,19 @@ module OLE_QA::Smoketest::TestScripts
       loan_screen.circulation_desk_yes.click
       loan_screen.loan_popup_box.wait_while_present
 
-      report("Checkout Item.")
-      patron_barcode = "6010570002086988"
+      report("Select patron.")
+      patron_barcode = OLE_QA::Framework::Patron_Factory.select_patron[:barcode]
       report("Patron Barcode:  #{patron_barcode}",1)
       loan_screen.wait_for_page_to_load
       loan_screen.patron_field.wait_until_present
       loan_screen.patron_field.set("#{patron_barcode}\n")
-
-      report("Enter Item Barcode: #{item_barcode}",1)
       loan_screen.item_field.wait_until_present
-      loan_screen.item_field.set("#{item_barcode}\n")
-      # The loan pop-up box may appear here with a due date or a circulation desk mismatch warning.
-      # Click the loan button only if the loan pop-up box appears.
-      if verify {loan_screen.loan_popup_box.present?}
-        loan_screen.loan_button.when_present.click
-      end
-      loan_screen.item_barcode_link(1).wait_until_present
-      verify_barcode = loan_screen.item_barcode_link.text.strip == item_barcode
-      report("Barcode Verified?  #{verify_barcode}",1)
-      due_date = loan_screen.item_due_date(1).text.strip
-      report("Due Date: #{due_date}",1)
-
-      report("Checkin Item.")
+      report("Item field appears?  #{loan_screen.item_field.present?}")
+      
+      report("Check return screen")
       loan_screen.return_button.click
       return_screen = OLE_QA::Framework::OLELS::Return.new(@ole)
       Watir::Wait.until { return_screen.item_field.present? }
-      now_ish = Chronic.parse('now')
-      checkin_date = now_ish.strftime("%m/%d/%Y")
-      checkin_time = now_ish.strftime("%k:%m")
-      expected_checkin_date = now_ish.strftime("%m/%d/%Y %I:%m %p")
-      report("Checkin Date:  #{checkin_date}",1)
-      return_screen.checkin_date_field.set(checkin_date)
-      report("Checkin Time:  #{checkin_time}",1)
-      return_screen.checkin_time_field.set(checkin_time)
-      report("Item Barcode:  #{item_barcode}",1)
-      return_screen.item_field.set("#{item_barcode}\n")
-      if verify {return_screen.checkin_message_box.present?}
-        return_screen.return_button.click
-        return_screen.checkin_message_box.wait_while_present
-      end
-      @ole.windows[-1].close if @ole.windows.count > 1
-      return_screen.items_returned_toggle.wait_until_present
-      verify_return_barcode = return_screen.item_barcode_link(1).text == item_barcode
-      report("Barcode Verified?  #{verify_return_barcode}",1)
-      verify_return_date = return_screen.item_checkin_date.text == expected_checkin_date
-      report("Checkin Date Verified?  #{verify_return_date}",1)
 
       report("End Circulation Session.")
       return_screen.end_session_button.click

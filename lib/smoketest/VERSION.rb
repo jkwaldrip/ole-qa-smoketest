@@ -15,6 +15,6 @@
 module OLE_QA
   module Smoketest
     # Version number of this project.
-    VERSION = '4.1.2'
+    VERSION = '4.1.3'
   end
 end
