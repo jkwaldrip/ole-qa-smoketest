@@ -92,14 +92,15 @@ module OLE_QA::Smoketest
           self.run if defined?(run)
           @results[:outcome] = true
         rescue => e
-            @results[:outcome] = false
-            report(e.class.name, 1)
-            report(e.message, 1)
-            e.backtrace.each {|line| report line,2}
-            time_now = Chronic.parse('now')
-            screenshot_filename = "Failure-#{time_now.strftime("%Y-%m-%d-%H%M%S")}.png"
-            @ole.browser.screenshot.save("#{OLE_QA::Smoketest::LoadDir}/screenshots/#{screenshot_filename}")
-            report("Saved screenshot: #{screenshot_filename}")
+          dismiss_dialog
+          @results[:outcome] = false
+          report(e.class.name, 1)
+          report(e.message, 1)
+          e.backtrace.each {|line| report line,2}
+          time_now = Chronic.parse('now')
+          screenshot_filename = "Failure-#{time_now.strftime("%Y-%m-%d-%H%M%S")}.png"
+          @ole.browser.screenshot.save("#{OLE_QA::Smoketest::LoadDir}/screenshots/#{screenshot_filename}")
+          report("Saved screenshot: #{screenshot_filename}")
         ensure
           dismiss_dialog
           close_extra_windows
