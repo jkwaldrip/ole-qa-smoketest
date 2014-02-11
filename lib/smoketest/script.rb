@@ -101,6 +101,7 @@ module OLE_QA::Smoketest
           screenshot_filename = "Failure-#{time_now.strftime("%Y-%m-%d-%H%M%S")}.png"
           @ole.browser.screenshot.save("#{OLE_QA::Smoketest::LoadDir}/screenshots/#{screenshot_filename}")
           report("Saved screenshot: #{screenshot_filename}")
+          OLE_QA::Smoketest.exit_status = 1 if OLE_QA::Smoketest.exit_status == 0
         ensure
           dismiss_dialog
           close_extra_windows

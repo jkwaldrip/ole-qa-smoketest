@@ -28,6 +28,8 @@ require "ole-qa-framework"
 
 module OLE_QA
   module Smoketest
+    # Set exit status
+    @exit_status = 0
     # Set date in format YYYY-MM-DD-HHMM
     StartTime = Time.new.strftime("%Y-%m-%d-%H%M")
     # Path to lib/
@@ -48,6 +50,7 @@ module OLE_QA
 
     class << self
       attr_accessor :test_scripts
+      attr_accessor :exit_status
 
       # Start an {OLE_QA::Smoketest::Session} and set up the necessary instance variables.
       # @param opts [Hash] Options hash to be passed to {OLE_QA::Smoketest::Session}
@@ -67,7 +70,7 @@ module OLE_QA
       # Perform {OLE_QA::Smoketest::Session} teardowns and exit the program.
       def quit
         @session.quit
-        exit
+        exit @exit_status
       end
 
       # View the options with which the Smoketest Session was started.
