@@ -163,7 +163,7 @@ module OLE_QA::Smoketest::TestScripts
 
       report("Get PO URL.",1)
       report("Wait for requisition to reach \'Closed\' status.",2)
-      assert_page(req_url) {requisition.wait_for_page_to_load
+      assert_page(req_url,120) {requisition.wait_for_page_to_load
                                 requisition.document_type_status.text.include?("Closed")}
 
 
