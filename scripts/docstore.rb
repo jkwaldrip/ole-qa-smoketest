@@ -12,6 +12,10 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+# De-activated because this interface is no longer supported.
+#                                                 - JKW
+#                                                   3/13/2014
+=begin
 module OLE_QA::Smoketest::TestScripts
   # Create a bibliographic record and then verify that it appears in a DocStore search.
   class DocStore < OLE_QA::Smoketest::Script
@@ -51,3 +55,4 @@ module OLE_QA::Smoketest::TestScripts
     end
   end
 end
+=end
