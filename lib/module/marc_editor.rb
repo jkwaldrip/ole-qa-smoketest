@@ -119,10 +119,15 @@ module OLE_QA::Smoketest
       def create_instance(instance_editor, instance_info)
         # Set instance number to 1 if not found.
         instance_info[:instance_number] = 1 if instance_info[:instance_number].nil?
+        
+        # Extract OLE Framework session from page.
+        ole = instance_editor.ole
 
         # Open instance record.
         report('Open instance record.',1)
         instance_editor.holdings_link(instance_info[:instance_number]).when_present.click
+        Watir::Wait.until {ole.browser.windows.count > 1}
+        ole.browser.windows[-1].use
         instance_editor.wait_for_page_to_load
 
         report('Set location.',1)
@@ -138,6 +143,10 @@ module OLE_QA::Smoketest
         report('Save instance record.',1)
         message = instance_editor.save_record
         report(message,2)
+
+        # Close instance editor window & return to base window
+        ole.browser.windows[-1].close
+        ole.browser.windows[0].use
       end
 
       # Create a Marc item record.
@@ -157,6 +166,9 @@ module OLE_QA::Smoketest
         item_info[:instance_number] = 1 if item_info[:instance_number].nil?
         item_info[:item_number]     = 1 if item_info[:item_number].nil?
 
+        # Extract OLE Framework session from page.
+        ole = item_editor.ole
+
         # Open item record.
         unless item_editor.item_link(item_info[:item_number]).present?
           item_editor.holdings_icon(item_info[:instance_number]).when_present.click
@@ -164,6 +176,8 @@ module OLE_QA::Smoketest
         end
         report('Open item record.',1)
         item_editor.item_link(item_info[:item_number]).click
+        Watir::Wait.until {ole.browser.windows.count > 1}
+        ole.browser.windows[-1].use
         item_editor.wait_for_page_to_load
 
         report('Set Item Type.',1)
@@ -181,6 +195,10 @@ module OLE_QA::Smoketest
         report('Save record.',1)
         message = item_editor.save_record
         report(message,2)
+
+        # Close item editor window & return to base window.
+        ole.browser.windows[-1].close
+        ole.browser.windows[0].use
       end
     end
   end
