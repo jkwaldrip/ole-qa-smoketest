@@ -1,6 +1,6 @@
 # -- DEPRECATED --
 
-This project is no longer being maintained.  For consistency and ease of maintenance, smoketest functionality has been established in the OLE Regression test suite as of [version 1.14.0](https://github.com/jkwaldrip/ole-regress/tree/v1.14.0).
+This project is no longer being maintained.  For consistency and ease of maintenance, smoketest functionality has been established in the [OLE Regression test suite](https://github.com/jkwaldrip/ole-regress) as of [version 1.14.0](https://github.com/jkwaldrip/ole-regress/tree/v1.14.0).
 
 # OLE QA Smoketest
 
